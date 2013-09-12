@@ -27,7 +27,10 @@ export PATH=$BASEPATH/script:$PATH
 ####################
 # step 0, cleaning
 echo "####### cleaning ##########"
-rm -rf results/*
+if [ ! -d results ]; then
+  mkdir results
+fi
+rm -rf results/*.txt results/*.vcf
 # step 1, de-novo mutation calling
 
 echo ""
