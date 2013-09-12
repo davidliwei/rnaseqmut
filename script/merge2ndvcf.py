@@ -6,7 +6,7 @@ import sys;
 import re;
 import argparse;
 
-parser=argparse.ArgumentParser(description="merge VCF files into a big VCF file, preserving all information.");
+parser=argparse.ArgumentParser(description="merge tab delimited files from multiple RNA-Seq samples (usually be a second scan results of rnaseqmut program) into a tab delimited file, preserving all information. All merged files should have exactly the same order and content of mutations.");
 parser.add_argument('-l','--label',help='The labels of each sample, separated by the comma');
 parser.add_argument('-x','--region',help='Only output mutations falling into a specific region, for example chr11:1-10000');
 parser.add_argument('-m','--merged',action='store_true',help='Merge forward and reverse fields into one');

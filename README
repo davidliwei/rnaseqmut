@@ -6,7 +6,7 @@ Dana-Farber Cancer Institute, Harvard School af Public Health
 Email: li.david.wei AT gmail.com
 ----------------------------------------------
 
-O. Introduction
+0. Introduction
 
 rnaseqmut is a light-weight C++ program to detect variants (or mutations, including SNPs, indels) from RNA-Seq BAM files. It offers the following features:
 
@@ -53,11 +53,19 @@ to finish the compilation. After compilation, the executable is in the bin/ dire
 
 3. Installation
 
+After compiling is successful, add the "bin/" (or "scripts/", if necessary) directory to your PATH variable:
+
+  export PATH=$PATH:/the_path_to_the_rnaseqmut_dir/bin:$PATH
+
+
 
 ----------------------------------------------
 II.    Usage
 ----------------------------------------------
 
+The usage of the "core" program, rnaseqmut, and a couple of optional scripts, is listed below.
+
+1. rnaseqmut: the core mutation detection program
 
 rnaseqmut  [-l <mutation_list>] [-i <min_read>] [-m <mut_span>]
                      [--] [--version] [-h] <bam_file>
@@ -87,11 +95,104 @@ Where:
    <bam_file>
      (required)  The bam file from which mutation will be called
 
+2. merge2ndvcf.py: (optional) merging mutations from multiple RNA-Seq scans.
+
+usage: merge2ndvcf.py [-h] [-l LABEL] [-x REGION] [-m] [-v] [-r MIN_READ] ...
+
+merge tab delimited files from multiple RNA-Seq samples (usually be a second
+scan results of rnaseqmut program) into a tab delimited file, preserving all
+information. All merged files should have exactly the same order and content
+of mutations.
+
+positional arguments:
+  vcffiles              VCF file names
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -l LABEL, --label LABEL
+                        The labels of each sample, separated by the comma
+  -x REGION, --region REGION
+                        Only output mutations falling into a specific region,
+                        for example chr11:1-10000
+  -m, --merged          Merge forward and reverse fields into one
+  -v, --output-vcf      Output VCF formatted files
+  -r MIN_READ, --min-read MIN_READ
+                        Minimum read requirement for ALT reads. Default 4.
+
+3. filtermut.py: (optional) filter mutations based on user-defined criterion. 
+
+usage: filtermut.py [-h] [-c CONTROL] [-i TREATMENT] [-t MIN_RECURRENT]
+                    [-d MIN_RECREAD] [-f MIN_RECFRAC] [-a MIN_REF]
+                    [-b MAX_ALT] [-p] [-n] [-z] [-l LABELS] [--DP2]
+                    [--DP2-out] [-x REGION]
+
+filter mutations in samples.
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+Sample definitions:
+  -c CONTROL, --control CONTROL
+                        The index of control group samples, separated by
+                        comma. For example, 0,2,4 defines a control group of 3
+                        samples: the 1st, the 3rd and the 5th sample in the
+                        order of the input table. Default: empty (do not use
+                        any control samples)
+  -i TREATMENT, --treatment TREATMENT
+                        The index of treatment group samples, separated by
+                        comma. Default: complement of control samples (if
+                        -c/--control option is not specified, use all samples
+                        as treatment samples).
+  -t MIN_RECURRENT, --min-recurrent MIN_RECURRENT
+                        Print mutations only occuring in at least this number
+                        of good treatment samples, defined as those with
+                        mutation >=min-recread reads and >=min-recfrac percent
+                        frequency. Default 1.
+  -d MIN_RECREAD, --min-recread MIN_RECREAD
+                        Minimum alt reads defined in treated good samples,
+                        default 10.
+  -f MIN_RECFRAC, --min-recfrac MIN_RECFRAC
+                        Minimum alt reads frequency in treated good samples,
+                        default 0.2.
+  -a MIN_REF, --min-ref MIN_REF
+                        Minimum reference reads in control samples. Default 4.
+  -b MAX_ALT, --max-alt MAX_ALT
+                        Maximum alternative reads in control samples. Default
+                        4.
+
+Input/output options:
+  -p, --passall         Do not do any filtering
+  -n, --no-header       Do not print header and script used
+  -z, --no-vcf          Do not print in vcf format; print as it is.
+  -l LABELS, --labels LABELS
+                        Labels used for each sample, separated by comma.
+                        Default: SAMPLE_x where x is the sample ID. The number
+                        of lables MUST be identical to the number of all
+                        samples in the original table, not only those defined
+                        by the -c/-i parameter.
+  --DP2                 DP2 field instad of DP4 field is used in both
+                        input/output files
+  --DP2-out             DP2 field instad of DP4 field is used in output files.
+                        This option is automatically set true if --DP2 is
+                        specified.
+  -x REGION, --region REGION
+                        Only output mutations falling into a specific region,
+                        for example chr11:1-10000
+
+
 
 ----------------------------------------------
 III.   Demo: detecting mutations from a series of RNA-Seq BAM files
 ----------------------------------------------
+A demo script is provided in the demo directory, together with 4 sample RNA-Seq BAM files. This demo illustrates the basic usage of rnaseqmut, including calling de-novo mutations, merging mutations from different samples, calling mutations based on a given list of mutations, and filtering mutations.
 
+A Linux system (with Python3 support) is required to run the full demo. If only core program is needed, you can just run the first 3 or 4 steps. 
+
+For more details, refer to the demo script and the usage of each programs/scripts.
+
+----------------------------------------------
+IV.    Acknowledgements
+----------------------------------------------
 
 ----------------------------------------------
 V.     Version History
