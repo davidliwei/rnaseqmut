@@ -1,0 +1,6 @@
+#!/bin/bash
+# Merge VCF files of the 1st pass of RNA-Seq samples
+# 
+
+sort -k 1,1 -k 2,2n -k 3,3 -k 4,4 -u  -m "$@" | perl -ane 'print if $F[3] ne "N"'  
+

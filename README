@@ -1,0 +1,96 @@
+----------------------------------------------
+rnaseqmut: detecting mutations in RNA-Seq samples
+----------------------------------------------
+
+O. Introduction
+
+rnaseqmut is a light-weight C++ program to detect variants (or mutations, including SNPs, indels) from RNA-Seq BAM files. It offers the following features:
+
+  (1) Perform de-novo mutation discovery from a given BAM file;
+  (2) For a user-defined mutation list, calculate the read coverage, including reads that support reference allele (reference reads) and alternative allele (alternative reads), from a given BAM file; 
+  (3) For a series of RNA-Seq samples, filter interesting mutations based on user-defined criteria.
+
+This software package includes a "core" C++ program, rnaseqmut, to call variants from a single BAM file, and a series of optional scripts, written in Python3 and bash, to identify putative interesting mutations in a group of RNA-Seq samples. 
+
+Besides mutation detection from RNA-Seq, the "core" program (rnaseqmut) can also be used to call mutations from other high-throughput sequencing platforms, including ChIP-seq, DNA-Seq, etc.
+
+I.     System requirements, Compiling and Installation
+
+II.    Usage
+
+III.   Demo: detecting mutations from a series of RNA-Seq BAM files
+
+IV.    Acknowledgements
+
+V.     Version History
+
+----------------------------------------------
+I.     System requirements, Compiling and Installation
+----------------------------------------------
+
+1. System requirements
+
+rnaseqmut depends on two third-party C++ packages, bamtools (written by Derek Barnett, https://github.com/pezmaster31/bamtools) and TCLAP (Templatized C++ Command Line Parser Library, written by Michael E. Smoot, http://tclap.sourceforge.net/). The source codes of both packages are included in rnaseqmut source code.
+
+To run the "core" program, only C++ compiler (gcc version >4.1) is needed. To use the supplementary scripts including demo, Linux system with Python3 support is required.
+
+2. Compiling
+
+To compile rnaseqmut, you need to first compile bamtools. To compile bamtools, go to the src/bamtools dir, and follow the instructions in bamtools help page below:
+
+https://github.com/pezmaster31/bamtools/wiki/Building-and-installing
+
+After bamtools compilation is complete, go back to the src dir and type
+
+  make
+
+to finish the compilation. After compilation, the executable is in the bin/ directory.
+
+
+3. Installation
+
+
+----------------------------------------------
+II.    Usage
+----------------------------------------------
+
+
+rnaseqmut  [-l <mutation_list>] [-i <min_read>] [-m <mut_span>]
+                     [--] [--version] [-h] <bam_file>
+
+
+Where: 
+
+   -l <mutation_list>,  --mutation_list <mutation_list>
+     The text file of a given, sorted list of mutations. Each line in a
+     file records one mutations, with chromosome, location, reference and
+     alternative sequence (separated by tab). The output will only include
+     mutations within a given mutation list.
+
+   -i <min_read>,  --min_read <min_read>
+     The minimum read count for the mutation to output. Default 1.
+
+   -m <mut_span>,  --mut_span <mut_span>
+     The minimum distance of the mutation to the beginning (end) of the
+     read. Default 4.
+
+   --version
+     Displays version information and exits.
+
+   -h,  --help
+     Displays usage information and exits.
+
+   <bam_file>
+     (required)  The bam file from which mutation will be called
+
+
+----------------------------------------------
+III.   Demo: detecting mutations from a series of RNA-Seq BAM files
+----------------------------------------------
+
+
+----------------------------------------------
+V.     Version History
+----------------------------------------------
+
+09/12/2013	0.1	rnaseqmut software initiated.

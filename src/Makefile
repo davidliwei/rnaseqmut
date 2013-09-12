@@ -1,0 +1,22 @@
+CXXFLAGS+=	-g -O2
+CC=		gcc
+CPP=		g++
+INCLUDES=	-I./ -Ibamtools/include -Lbamtools/lib
+LIBRARY=	-lbamtools -lz
+PROGRAM=	../bin/rnaseqmut
+
+.PHONY:		all clean
+
+all:		${PROGRAM}
+
+${PROGRAM}:	bamcallmut.o bamalignfunc.o  bamalignfunc.h parseargs.o parseargs.h mutmap.o mutmap.h givenrefmut.o
+	${CPP} ${CXXFLAGS}  ${INCLUDES}  $^ ${LIBRARY} -o $@
+
+
+.SUFFIXES:	.cpp .o
+
+.cpp.o:
+	${CC} -c ${CXXFLAGS} ${INCLUDES} $< -o $@
+
+clean:
+	rm -rf *.o ${PROGRAM}
