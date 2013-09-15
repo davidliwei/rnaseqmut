@@ -198,4 +198,6 @@ IV.    Acknowledgements
 V.     Version History
 ----------------------------------------------
 
+09/14/2013	0.2	Fix a bug of failing to read NM tags for some versions of BAM.
+                        By default, suppress mutations with character "N" (controlled by -n option in rnaseqmut)
 09/12/2013	0.1	rnaseqmut software initiated.

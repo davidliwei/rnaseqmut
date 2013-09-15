@@ -16,6 +16,8 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
     cmd.add(mutspanarg);
     ValueArg<int> minreadarg("i","min_read","The minimum read count for the mutation to output. Default 1.",false,1,"min_read");
     cmd.add(minreadarg);
+    SwitchArg hasnarg("n","output_n","Treat the character N as substitutions.");
+    cmd.add(hasnarg);
 
     ValueArg<string> mutfilearg("l","mutation_list","The text file of a given, sorted list of mutations. Each line in a file records one mutations, with chromosome, location, reference and alternative sequence (separated by tab). The output will only include mutations within a given mutation list.",false,"","mutation_list");
     cmd.add(mutfilearg);
@@ -30,6 +32,7 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
     args.bamfilename=bamfile.getValue();
     args.mutfile=mutfilearg.getValue();
     args.min_read=minreadarg.getValue();
+    args.printn=hasnarg.getValue();
 
     cerr<<"BAM file:"<<args.bamfilename<<endl;
     if(args.mutfile=="") args.mutation_given=false;

@@ -152,14 +152,24 @@ Return value:
 int getMismatchInfo(BamAlignment & al, vector<NMStruct>& nmsv, bool printdbginfo){
   long mappos=(long) al.Position;
   int refid=(int)al.RefID;
-  uint32_t nmtag=0;
+  //uint32_t nmtag=0;
+  int32_t nmtag_i=0;
+  int nmtag=0;
   if(!al.HasTag("NM")){
     cerr<<"Error: no NM tag.\n";
     return -1;
   }
-  if( !al.GetTag("NM",nmtag)){
-     cerr<<"Error reading NM tags in the read alignment; skipping the reads..\n";
-     return -1;
+  if( !al.GetTag("NM",nmtag_i)){
+     // switch to uint32_t for some versions of BAM
+     uint32_t nmtag_u=0;
+     if( !al.GetTag("NM",nmtag_u)){
+       cerr<<"Error reading NM tags in the read alignment; skipping the reads. NMtag="<<nmtag<<".\n";
+       return -1;
+     }else{
+       nmtag=nmtag_u;
+     }
+  }else{
+    nmtag=nmtag_i;
   }
   if(nmtag<1) return 0;
   //MD type

@@ -15,6 +15,9 @@ struct CallingArgs{
   /* The filename of a given mutation list */
   std::string mutfile;
   bool mutation_given;
+
+  /* To output 'N's as alternative option? */
+  bool printn;
 };
 
 /* parsing arguments */

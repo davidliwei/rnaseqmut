@@ -40,8 +40,10 @@ int updateMutPos(MutMap& mtmp, long mappos, string refseq, CallingArgs& args){
     vector<MutInfo> & vmpt= itr->second;
     for(int j=0;j<vmpt.size();j++){
       int totalalt=vmpt[j].altF+vmpt[j].altB;
-      if(args.mutation_given || totalalt>=args.min_read)
-        printMutation(refseq,itr->first,vmpt[j]);
+      if(args.mutation_given || totalalt>=args.min_read){
+        if(args.printn || vmpt[j].alt != "N")
+          printMutation(refseq,itr->first,vmpt[j]);
+      }
     }
   }
   // update the map information
