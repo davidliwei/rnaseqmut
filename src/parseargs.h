@@ -18,6 +18,15 @@ struct CallingArgs{
 
   /* To output 'N's as alternative option? */
   bool printn;
+
+  /* The reference fasta file */
+  std::string ref_fasta;
+  bool has_fasta; //whether the fasta file is given
+  
+  /* Whether to skip indels */
+  bool skipindel;
+  /* Whether to skip reads with indels */
+  bool skipindelread;
 };
 
 /* parsing arguments */

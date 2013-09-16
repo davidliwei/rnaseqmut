@@ -3,6 +3,7 @@
 #include "parseargs.h"
 #include "mutmap.h"
 #include "givenrefmut.h"
+#include "refio.h"
 
 #include <fstream>
 #include <sstream>
@@ -40,10 +41,16 @@ int updateMutPos(MutMap& mtmp, long mappos, string refseq, CallingArgs& args){
     vector<MutInfo> & vmpt= itr->second;
     for(int j=0;j<vmpt.size();j++){
       int totalalt=vmpt[j].altF+vmpt[j].altB;
-      if(args.mutation_given || totalalt>=args.min_read){
-        if(args.printn || vmpt[j].alt != "N")
-          printMutation(refseq,itr->first,vmpt[j]);
+      bool outputmut=false;
+      if(args.mutation_given) outputmut=true;
+      else{
+        if(totalalt>=args.min_read){
+          if(args.printn || vmpt[j].alt != "N") outputmut=true;
+        }
+        if(args.skipindel && (vmpt[j].ref.size()!=1 || vmpt[j].alt.size()!=1) ) outputmut=false;
       }
+      if(outputmut)
+        printMutation(refseq,itr->first,vmpt[j]);
     }
   }
   // update the map information
@@ -57,7 +64,7 @@ int main(int argc, char* argv[]){
 
   //parse command line information
   CallingArgs args;
-  parseArguments(argc,argv,args);
+  if(parseArguments(argc,argv,args)==-1) return -1;
   
   // check if a given list of mutations is given; load chromosome names
   bool mutation_given=args.mutation_given;
@@ -87,6 +94,7 @@ int main(int argc, char* argv[]){
   long counter=0;
   long prevpos=-1;
   int prevrefid=-1;
+
 
   MutMap mtmp_0;
   MutMap* mtmp_itr=& mtmp_0;
@@ -140,16 +148,33 @@ int main(int argc, char* argv[]){
       cerr<<"Error in line "<<counter<<endl;
     }
     if(!al.IsPrimaryAlignment() || (al.IsPaired() && ! al.IsProperPair() ))continue;
-    string mdtag; al.GetTag("MD",mdtag);
     vector<CigarOp> & cgo= al.CigarData;
+    //string mdtag; al.GetTag("MD",mdtag);
     //cout<<"SEQ:"<<al.Name<<", MD tag:"<<mdtag<<",length"<<al.Length<<", CIGAR:"; for(int i=0;i<cgo.size();i++) cout<<cgo[i].Length<<cgo[i].Type<<" "; cout<<endl; 
     //cout<<"dup:"<<al.IsDuplicate()<<",failed:"<<al.IsFailedQC()<<",Mapped:"<<al.IsMapped()<<",second:"<<al.IsSecondMate()<<",MateMapped:"<<al.IsMateMapped()
     //  <<",MateRS:"<<al.IsMateReverseStrand()<<",paired:"<<al.IsPaired()<<",primary:"<<al.IsPrimaryAlignment()<<",proper:"<<al.IsProperPair()<<endl;
+    
+    // check if the read contains indels?
+    if(args.skipindelread){
+      bool hasindel=false;
+      for(int i=0;i<vnms.size();i++){
+        if(vnms[i].origin.size()>1 || vnms[i].sub.size()>1) {hasindel=true;break;}
+      }
+      if(hasindel) continue;
+    }
     for(int i=0;i<vnms.size();i++){
       vnms[i].chr_id=refid;
       blackout.insert(vnms[i].real_pos);
       if(vnms[i].relativepos < args.mut_span || al.Length- vnms[i].relativepos < args.mut_span ) continue;
       bool isrev=! al.IsReverseStrand();
+      // compare with given reference sequence, check for valid
+      if( args.has_fasta && vnms[i].origin.size()==1 && vnms[i].sub.size()==1){
+        string mutinrefseq;
+        int rfsqrs=refseq_getseq(RVREF[refid].RefName,vnms[i].pos-1,vnms[i].origin.size(),mutinrefseq); // in ref chr, it is 0-base, and in vcf it is 1-base
+        if( rfsqrs==0 && vnms[i].origin != mutinrefseq){
+          cerr<<"Error: incorrect REF sequence in "<<RVREF[refid].RefName<<":"<<vnms[i].pos<<" (real:"<<vnms[i].real_pos<<"), given "<<vnms[i].origin<<", should be "<<mutinrefseq<<". Check the reference genome or MD tag of your BAM file."<<endl;
+        }
+      }
       mtmp_itr->addOneMut( vnms[i].real_pos, vnms[i].origin, vnms[i].sub, isrev,!mutation_given,1);
     }
     
@@ -181,6 +206,9 @@ int main(int argc, char* argv[]){
     }
   }
   reader.Close();
+  if(args.has_fasta){
+    refseq_destroy();
+  }
   return 0;
 }
 

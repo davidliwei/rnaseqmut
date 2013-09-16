@@ -1,5 +1,6 @@
 #include "parseargs.h"
 #include "tclap/CmdLine.h"
+#include "refio.h"
 
 #include <iostream>
 
@@ -19,8 +20,17 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
     SwitchArg hasnarg("n","output_n","Treat the character N as substitutions.");
     cmd.add(hasnarg);
 
+    SwitchArg indelarg("d","with_indel","Do not skip indels. By default all indels are skipped as most RNA-Seq are performed by Illumina sequencing, which is prone to indel errors.");
+    cmd.add(indelarg);
+
+    SwitchArg indelreadarg("k","with_indel_read","Do not skip reads with indels. By default all reads with indels are skipped as most RNA-Seq are performed by Illumina sequencing, which is prone to indel errors.");
+    cmd.add(indelreadarg);
+
     ValueArg<string> mutfilearg("l","mutation_list","The text file of a given, sorted list of mutations. Each line in a file records one mutations, with chromosome, location, reference and alternative sequence (separated by tab). The output will only include mutations within a given mutation list.",false,"","mutation_list");
     cmd.add(mutfilearg);
+
+    ValueArg<string> reffilearg("r","ref_fasta","The (optional) fasta file for the reference genome",false,"","ref_fasta");
+    cmd.add(reffilearg);
 
     UnlabeledValueArg<string> bamfile("bamfile","The bam file from which mutation will be called",true,"","bam_file");
     cmd.add(bamfile);
@@ -33,6 +43,16 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
     args.mutfile=mutfilearg.getValue();
     args.min_read=minreadarg.getValue();
     args.printn=hasnarg.getValue();
+    args.skipindel=!indelarg.getValue();
+    args.skipindelread=!indelreadarg.getValue();
+    
+    args.ref_fasta=reffilearg.getValue();
+    if(args.ref_fasta != ""){
+      args.has_fasta = true;
+      if(refseq_init(args.ref_fasta)==-1) return -1;
+    }
+    else
+      args.has_fasta = false;
 
     cerr<<"BAM file:"<<args.bamfilename<<endl;
     if(args.mutfile=="") args.mutation_given=false;
@@ -40,6 +60,7 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
     cerr<<"Mut span:"<<args.mut_span<<endl;
     cerr<<"Mutation list:"<<args.mutfile<<endl;
     cerr<<"Min read:"<<args.min_read<<endl;
+    cerr<<"Reference genome:"<<args.ref_fasta<<endl;
   }catch(ArgException &e){
     cerr<<"error: "<<e.error()<<" for arg "<<e.argId();
     return -1;

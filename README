@@ -34,8 +34,6 @@ I.     System requirements, Compiling and Installation
 
 1. System requirements
 
-rnaseqmut depends on two third-party C++ packages, bamtools (written by Derek Barnett, https://github.com/pezmaster31/bamtools) and TCLAP (Templatized C++ Command Line Parser Library, written by Michael E. Smoot, http://tclap.sourceforge.net/). The source codes of both packages are included in rnaseqmut source code.
-
 To run the "core" program, only C++ compiler (gcc version >4.1) is needed. To use the supplementary scripts including demo, Linux system with Python3 support is required.
 
 2. Compiling
@@ -67,17 +65,34 @@ The usage of the "core" program, rnaseqmut, and a couple of optional scripts, is
 
 1. rnaseqmut: the core mutation detection program
 
-rnaseqmut  [-l <mutation_list>] [-i <min_read>] [-m <mut_span>]
-                     [--] [--version] [-h] <bam_file>
+USAGE:
+
+   rnaseqmut  [-r <ref_fasta>] [-l <mutation_list>] [-k] [-d] [-n] [-i
+              <min_read>] [-m <mut_span>] [--] [--version] [-h] <bam_file>
 
 
-Where: 
+Where:
+
+   -r <ref_fasta>,  --ref_fasta <ref_fasta>
+     The (optional) fasta file for the reference genome
 
    -l <mutation_list>,  --mutation_list <mutation_list>
      The text file of a given, sorted list of mutations. Each line in a
      file records one mutations, with chromosome, location, reference and
      alternative sequence (separated by tab). The output will only include
      mutations within a given mutation list.
+
+   -k,  --with_indel_read
+     Do not skip reads with indels. By default all reads with indels are
+     skipped as most RNA-Seq are performed by Illumina sequencing, which is
+     prone to indel errors.
+
+   -d,  --with_indel
+     Do not skip indels. By default all indels are skipped as most RNA-Seq
+     are performed by Illumina sequencing, which is prone to indel errors.
+
+   -n,  --output_n
+     Treat the character N as substitutions.
 
    -i <min_read>,  --min_read <min_read>
      The minimum read count for the mutation to output. Default 1.
@@ -86,14 +101,22 @@ Where:
      The minimum distance of the mutation to the beginning (end) of the
      read. Default 4.
 
+   --,  --ignore_rest
+     Ignores the rest of the labeled arguments following this flag.
+
    --version
      Displays version information and exits.
 
    -h,  --help
      Displays usage information and exits.
 
+
    <bam_file>
      (required)  The bam file from which mutation will be called
+
+
+   Calling mutations in BAM file.
+
 
 2. merge2ndvcf.py: (optional) merging mutations from multiple RNA-Seq scans.
 
@@ -194,10 +217,14 @@ For more details, refer to the demo script and the usage of each programs/script
 IV.    Acknowledgements
 ----------------------------------------------
 
+rnaseqmut depends on several third-party C++ packages, including bamtools (written by Derek Barnett, https://github.com/pezmaster31/bamtools), TCLAP (Templatized C++ Command Line Parser Library, written by Michael E. Smoot, http://tclap.sourceforge.net/), FASTA/FASTQ parser in C (by Heng Li, http://lh3lh3.users.sourceforge.net/parsefastq.shtml). The source codes of these packages are included in rnaseqmut source code.
+
 ----------------------------------------------
 V.     Version History
 ----------------------------------------------
-
+09/16/2013	0.3	rnaseqmut allows comparing mutations with reference genome.
+			By default, rnaseqmut will skip all indels and all reads with indels; this behavior can be controlled by -k and -d options. 
+			Fix several bugs.
 09/14/2013	0.2	Fix a bug of failing to read NM tags for some versions of BAM.
                         By default, suppress mutations with character "N" (controlled by -n option in rnaseqmut)
 09/12/2013	0.1	rnaseqmut software initiated.

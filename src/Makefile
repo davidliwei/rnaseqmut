@@ -9,7 +9,7 @@ PROGRAM=	../bin/rnaseqmut
 
 all:		${PROGRAM}
 
-${PROGRAM}:	bamcallmut.o bamalignfunc.o  bamalignfunc.h parseargs.o parseargs.h mutmap.o mutmap.h givenrefmut.o
+${PROGRAM}:	bamcallmut.o bamalignfunc.o  bamalignfunc.h parseargs.o parseargs.h mutmap.o mutmap.h givenrefmut.o refio.o
 	${CPP} ${CXXFLAGS}  ${INCLUDES}  $^ ${LIBRARY} -o $@
 
 

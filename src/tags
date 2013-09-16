@@ -5,6 +5,7 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
 ABOR_CMD	bamtools/src/api/internal/io/BamFtp_p.cpp	/^static const string ABOR_CMD = "ABOR";$/;"	m	namespace:BamTools::Internal	file:
+AC_KSEQ_H	kseq.h	31;"	d
 ADD_FAILURE	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	18757;"	d
 ADD_FAILURE_AT	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	18761;"	d
 ALGORITHMS_SORT_H	bamtools/include/api/algorithms/Sort.h	12;"	d
@@ -2847,6 +2848,12 @@ Jump	bamtools/src/api/BamReader.cpp	/^bool BamReader::Jump(int refID, int positi
 Jump	bamtools/src/api/internal/bam/BamMultiReader_p.cpp	/^bool BamMultiReaderPrivate::Jump(int refID, int position) {$/;"	f	class:BamMultiReaderPrivate
 Jump	bamtools/src/api/internal/index/BamStandardIndex_p.cpp	/^bool BamStandardIndex::Jump(const BamRegion& region, bool* hasAlignmentsInRegion) {$/;"	f	class:BamStandardIndex
 Jump	bamtools/src/api/internal/index/BamToolsIndex_p.cpp	/^bool BamToolsIndex::Jump(const BamTools::BamRegion& region, bool* hasAlignmentsInRegion) {$/;"	f	class:BamToolsIndex
+KSEQ_INIT	kseq.h	217;"	d
+KSTREAM_INIT	kseq.h	139;"	d
+KSTRING_T	kseq.h	81;"	d
+KS_SEP_MAX	kseq.h	39;"	d
+KS_SEP_SPACE	kseq.h	37;"	d
+KS_SEP_TAB	kseq.h	38;"	d
 KeySequence	bamtools/include/api/SamReadGroup.h	/^    std::string KeySequence;                   \/\/ KS:<KeySequence>$/;"	m	struct:BamTools::SamReadGroup
 KeySequence	bamtools/src/api/SamReadGroup.h	/^    std::string KeySequence;                   \/\/ KS:<KeySequence>$/;"	m	struct:BamTools::SamReadGroup
 KilledBySignal	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest-all.cc	/^KilledBySignal::KilledBySignal(int signum) : signum_(signum) {$/;"	f	class:testing::KilledBySignal
@@ -3260,7 +3267,7 @@ PLATFORM_ID	bamtools/build/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	92;"	
 PLATFORM_ID	bamtools/build/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	95;"	d	file:
 PLATFORM_ID	bamtools/build/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp	98;"	d	file:
 POSITION_PROPERTY	bamtools/src/toolkit/bamtools_filter.cpp	/^const string POSITION_PROPERTY            = "position";$/;"	m	namespace:BamTools	file:
-PROGRAM	Makefile	/^PROGRAM=	bamcallmut$/;"	m
+PROGRAM	Makefile	/^PROGRAM=	..\/bin\/rnaseqmut$/;"	m
 PROXY_SEPARATOR	bamtools/src/api/internal/io/BamHttp_p.cpp	/^static const char PROXY_SEPARATOR = ':';$/;"	m	namespace:BamTools::Internal	file:
 PackUnsignedInt	bamtools/include/api/BamAux.h	/^API_EXPORT inline void PackUnsignedInt(char* buffer, unsigned int value) {$/;"	f	namespace:BamTools
 PackUnsignedInt	bamtools/src/api/BamAux.h	/^API_EXPORT inline void PackUnsignedInt(char* buffer, unsigned int value) {$/;"	f	namespace:BamTools
@@ -3532,6 +3539,7 @@ READGROUPS_TOKEN	bamtools/src/toolkit/bamtools_resolve.cpp	/^static const string
 READNAME_FILE_SUFFIX	bamtools/src/toolkit/bamtools_resolve.cpp	/^static const string READNAME_FILE_SUFFIX = ".uniq_names.txt";$/;"	v	file:
 READ_GROUP_TAG	bamtools/src/toolkit/bamtools_resolve.cpp	/^static const string   READ_GROUP_TAG = "RG";$/;"	v	file:
 REFERENCE_PROPERTY	bamtools/src/toolkit/bamtools_filter.cpp	/^const string REFERENCE_PROPERTY           = "reference";$/;"	m	namespace:BamTools	file:
+REFIO_H	refio.h	3;"	d
 REFREC	mutmap.h	/^struct REFREC{$/;"	s
 REGISTER_TYPED_TEST_CASE_P	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	17070;"	d
 REIN_CMD	bamtools/src/api/internal/io/BamFtp_p.cpp	/^static const string REIN_CMD = "REIN";$/;"	m	namespace:BamTools::Internal	file:
@@ -5287,6 +5295,14 @@ Z_DEFAULT_MEM_LEVEL	bamtools/src/api/BamConstants.h	/^const int8_t   Z_DEFAULT_M
 ZshCompletionOutput	tclap/ZshCompletionOutput.h	/^ZshCompletionOutput::ZshCompletionOutput()$/;"	f	class:TCLAP::ZshCompletionOutput
 ZshCompletionOutput	tclap/ZshCompletionOutput.h	/^class ZshCompletionOutput : public CmdLineOutput$/;"	c	namespace:TCLAP
 _HAS_EXCEPTIONS	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	398;"	d
+__KSEQ_BASIC	kseq.h	145;"	d
+__KSEQ_READ	kseq.h	170;"	d
+__KSEQ_TYPE	kseq.h	210;"	d
+__KS_BASIC	kseq.h	51;"	d
+__KS_GETC	kseq.h	67;"	d
+__KS_GETUNTIL	kseq.h	92;"	d
+__KS_TYPE	kseq.h	41;"	d
+__kstring_t	kseq.h	/^typedef struct __kstring_t {$/;"	s
 _acceptsMultipleValues	tclap/Arg.h	/^		bool _acceptsMultipleValues;$/;"	m	class:TCLAP::Arg
 _allowMore	tclap/MultiArg.h	/^	bool _allowMore;$/;"	m	class:TCLAP::MultiArg
 _allowed	tclap/ValuesConstraint.h	/^		std::vector<T> _allowed;$/;"	m	class:TCLAP::ValuesConstraint
@@ -5646,6 +5662,7 @@ current_value_	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^  
 current_value_	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^    ParamType current_value_;$/;"	m	class:testing::internal::CartesianProductGenerator7::Iterator
 current_value_	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^    ParamType current_value_;$/;"	m	class:testing::internal::CartesianProductGenerator8::Iterator
 current_value_	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^    ParamType current_value_;$/;"	m	class:testing::internal::CartesianProductGenerator9::Iterator
+currentchr	refio.cpp	/^string currentchr="";$/;"	v
 d	bamtools/include/api/BamMultiReader.h	/^        Internal::BamMultiReaderPrivate* d;$/;"	m	class:BamTools::BamMultiReader
 d	bamtools/include/api/BamReader.h	/^        Internal::BamReaderPrivate* d;$/;"	m	class:BamTools::BamReader
 d	bamtools/include/api/BamWriter.h	/^        Internal::BamWriterPrivate* d;$/;"	m	class:BamTools::BamWriter
@@ -6073,6 +6090,7 @@ hasComment	bamtools/src/third_party/jsoncpp/json_value.cpp	/^Value::hasComment( 
 hasCommentForValue	bamtools/src/third_party/jsoncpp/json_writer.cpp	/^StyledStreamWriter::hasCommentForValue( const Value &value )$/;"	f	class:Json::StyledStreamWriter
 hasCommentForValue	bamtools/src/third_party/jsoncpp/json_writer.cpp	/^StyledWriter::hasCommentForValue( const Value &value )$/;"	f	class:Json::StyledWriter
 hasHelpAndVersion	tclap/CmdLine.h	/^inline bool CmdLine::hasHelpAndVersion()$/;"	f	class:TCLAP::CmdLine
+has_fasta	parseargs.h	/^  bool has_fasta; \/\/whether the fasta file is given$/;"	m	struct:CallingArgs
 has_new_fatal_failure	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^  bool has_new_fatal_failure() const { return has_new_fatal_failure_; }$/;"	f	class:testing::internal::HasNewFatalFailureHelper
 has_new_fatal_failure_	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^  bool has_new_fatal_failure_;$/;"	m	class:testing::internal::HasNewFatalFailureHelper
 host_name_	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest-all.cc	/^  const string host_name_;$/;"	m	class:testing::internal::StreamingListener	file:
@@ -6333,6 +6351,11 @@ kindIndex	bamtools/src/third_party/jsoncpp/json_value.h	/^         kindIndex,$/;
 kindKey	bamtools/src/third_party/jsoncpp/json_value.h	/^         kindKey$/;"	e	enum:Json::PathArgument::Kind
 kindNone	bamtools/src/third_party/jsoncpp/json_value.h	/^         kindNone = 0,$/;"	e	enum:Json::PathArgument::Kind
 kind_	bamtools/src/third_party/jsoncpp/json_value.h	/^      Kind kind_;$/;"	m	class:Json::PathArgument
+kroundup32	kseq.h	89;"	d
+ks_eof	kseq.h	48;"	d
+ks_rewind	kseq.h	49;"	d
+kstring_t	kseq.h	/^} kstring_t;$/;"	t	typeref:struct:__kstring_t
+l	kseq.h	/^	size_t l, m;$/;"	m	struct:__kstring_t
 lastCombined	tclap/SwitchArg.h	/^inline bool SwitchArg::lastCombined(std::string& combinedSwitches ) $/;"	f	class:TCLAP::SwitchArg
 lastValueEnd_	bamtools/src/third_party/jsoncpp/json_reader.h	/^      Location lastValueEnd_;$/;"	m	class:Json::Reader
 lastValue_	bamtools/src/third_party/jsoncpp/json_reader.h	/^      Value *lastValue_;$/;"	m	class:Json::Reader
@@ -6380,6 +6403,7 @@ longID	tclap/MultiSwitchArg.h	/^MultiSwitchArg::longID(const std::string& val) c
 longID	tclap/UnlabeledMultiArg.h	/^std::string UnlabeledMultiArg<T>::longID(const std::string& val) const$/;"	f	class:TCLAP::UnlabeledMultiArg
 longID	tclap/UnlabeledValueArg.h	/^std::string UnlabeledValueArg<T>::longID(const std::string& val) const$/;"	f	class:TCLAP::UnlabeledValueArg
 longID	tclap/ValueArg.h	/^std::string ValueArg<T>::longID(const std::string& val) const$/;"	f	class:TCLAP::ValueArg
+m	kseq.h	/^	size_t l, m;$/;"	m	struct:__kstring_t
 m_addresses	bamtools/src/api/internal/io/HostInfo_p.h	/^        std::vector<HostAddress> m_addresses;$/;"	m	class:BamTools::Internal::HostInfo
 m_alignmentCache	bamtools/src/api/internal/bam/BamMultiReader_p.h	/^        IMultiMerger* m_alignmentCache;$/;"	m	class:BamTools::Internal::BamMultiReaderPrivate
 m_alignmentsBeginOffset	bamtools/src/api/internal/bam/BamReader_p.h	/^        int64_t     m_alignmentsBeginOffset;$/;"	m	class:BamTools::Internal::BamReaderPrivate
@@ -6993,6 +7017,7 @@ printOption	tclap/ZshCompletionOutput.h	/^inline void ZshCompletionOutput::print
 printShortArg	tclap/DocBookOutput.h	/^inline void DocBookOutput::printShortArg(Arg* a)$/;"	f	class:TCLAP::DocBookOutput
 print_time_	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest-all.cc	/^  bool print_time_;$/;"	m	class:testing::internal::GTestFlagSaver	file:
 print_time_	bamtools/src/third_party/gtest-1.6.0/src/gtest-internal-inl.h	/^  bool print_time_;$/;"	m	class:testing::internal::GTestFlagSaver
+printn	parseargs.h	/^  bool printn;$/;"	m	struct:CallingArgs
 priority	bamtools/src/utils/bamtools_filter_ruleparser.h	/^inline int priority(const RuleToken& token) {$/;"	f	namespace:BamTools
 processArg	tclap/MultiArg.h	/^bool MultiArg<T>::processArg(int *i, std::vector<std::string>& args) $/;"	f	class:TCLAP::MultiArg
 processArg	tclap/MultiSwitchArg.h	/^inline bool MultiSwitchArg::processArg(int *i, std::vector<std::string>& args)$/;"	f	class:TCLAP::MultiSwitchArg
@@ -7039,10 +7064,19 @@ recoverFromError	bamtools/src/third_party/jsoncpp/json_reader.cpp	/^Reader::reco
 ref	mutmap.h	/^  string ref;$/;"	m	class:MutInfo
 refB	mutmap.h	/^  int refB;$/;"	m	class:MutInfo
 refF	mutmap.h	/^  int refF;$/;"	m	class:MutInfo
+refFile	refio.cpp	/^gzFile refFile;$/;"	v
+ref_fasta	parseargs.h	/^  std::string ref_fasta;$/;"	m	struct:CallingArgs
 reference	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^  typedef const T& reference;$/;"	t	class:testing::internal::ParamIterator
 reference	bamtools/src/third_party/jsoncpp/json_value.h	/^      typedef Value &reference;$/;"	t	class:Json::ValueIterator
 reference	bamtools/src/third_party/jsoncpp/json_value.h	/^      typedef const Value &reference;$/;"	t	class:Json::ValueConstIterator
+reffilename	refio.cpp	/^string reffilename="";$/;"	v
+refgenome	refio.cpp	/^map<string,long> refgenome;$/;"	v
 refs	bamtools/src/utils/bamtools_variant.h	/^            size_t refs;$/;"	m	struct:BamTools::Variant::ImplBase
+refseq	refio.cpp	/^kseq_t *refseq=NULL;$/;"	v
+refseq_destroy	refio.cpp	/^int refseq_destroy(){$/;"	f
+refseq_getseq	refio.cpp	/^int refseq_getseq(string chrname, long a, int len, string& seq){$/;"	f
+refseq_init	refio.cpp	/^int refseq_init(string filename){$/;"	f
+refseq_loadchr	refio.cpp	/^int refseq_loadchr(string chrname){$/;"	f
 regex	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest-all.cc	/^  const RE* regex() const { return regex_; }$/;"	f	class:testing::internal::DeathTestImpl
 regex	bamtools/src/third_party/gtest-1.6.0/src/gtest-death-test.cc	/^  const RE* regex() const { return regex_; }$/;"	f	class:testing::internal::DeathTestImpl
 regex_	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest-all.cc	/^  const RE* const regex_;$/;"	m	class:testing::internal::DeathTestImpl	file:
@@ -7081,6 +7115,7 @@ results	bamtools/src/utils/bamtools_filter_ruleparser.h	/^        std::queue<std
 results_	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest-all.cc	/^  const TestPartResultArray* const results_;$/;"	m	class:testing::internal::SingleFailureChecker	file:
 rightMargin_	bamtools/src/third_party/jsoncpp/json_writer.h	/^      int rightMargin_;$/;"	m	class:Json::StyledStreamWriter
 rightMargin_	bamtools/src/third_party/jsoncpp/json_writer.h	/^      int rightMargin_;$/;"	m	class:Json::StyledWriter
+s	kseq.h	/^	char *s;$/;"	m	struct:__kstring_t
 set	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^  void set(const T& value) { *pointer() = value; }$/;"	f	class:std::tr1::ThreadLocal
 set	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^  void set(const T& value) { value_ = value; }$/;"	f	class:std::tr1::ThreadLocal
 setComment	bamtools/src/third_party/jsoncpp/json_value.cpp	/^Value::CommentInfo::setComment( const char *text )$/;"	f	class:Json::Value::CommentInfo
