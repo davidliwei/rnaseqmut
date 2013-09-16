@@ -18,7 +18,7 @@ This software package includes a "core" C++ program, rnaseqmut, to call variants
 
 Besides mutation detection from RNA-Seq, the "core" program (rnaseqmut) can also be used to call mutations from other high-throughput sequencing platforms, including ChIP-seq, DNA-Seq, etc.
 
-I.     System requirements, Compiling and Installation
+I.     Before running rnaseqmut
 
 II.    Usage
 
@@ -29,7 +29,7 @@ IV.    Acknowledgements
 V.     Version History
 
 ----------------------------------------------
-I.     System requirements, Compiling and Installation
+I.     Before running rnaseqmut
 ----------------------------------------------
 
 1. System requirements
@@ -55,6 +55,11 @@ After compiling is successful, add the "bin/" (or "scripts/", if necessary) dire
 
   export PATH=$PATH:/the_path_to_the_rnaseqmut_dir/bin:$PATH
 
+4. Data preparation
+
+rnaseqmut requires sorted BAM files with index (.bai file) as input. Use "samtools sort/index" to sort/index BAM files before running rnaseqmut.
+
+rnaseqmut detects mutations from the NM tag and MD tag in the BAM format (see http://samtools.sourceforge.net/SAMv1.pdf for BAM specification). If the NM or MD tag is missing in your BAM file (this is common if reads are aligned using older RNA-Seq read mapping softwares), you may need to realign them using the latest RNA-Seq read aligners (e.g., Tophat).
 
 
 ----------------------------------------------
