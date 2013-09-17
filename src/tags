@@ -5511,6 +5511,10 @@ break_on_failure_	bamtools/src/third_party/gtest-1.6.0/src/gtest-internal-inl.h	
 bucketIndex_	bamtools/src/third_party/jsoncpp/json_value.h	/^         BucketIndex bucketIndex_;$/;"	m	struct:Json::ValueInternalMap::IteratorState
 bucketsSize_	bamtools/src/third_party/jsoncpp/json_value.h	/^      BucketIndex bucketsSize_;$/;"	m	class:Json::ValueInternalMap
 buckets_	bamtools/src/third_party/jsoncpp/json_value.h	/^      ValueInternalLink *buckets_;$/;"	m	class:Json::ValueInternalMap
+buff_a	refio.cpp	/^long buff_a=-1;$/;"	v
+buff_a_size	refio.cpp	/^long buff_a_size=100000;$/;"	v
+buff_b	refio.cpp	/^long buff_b=-1;$/;"	v
+buff_b_size	refio.cpp	/^long buff_b_size=10000000;$/;"	v
 buffer_	bamtools/src/third_party/jsoncpp/json_batchallocator.h	/^      AllocatedType buffer_[objectPerAllocation];$/;"	m	struct:Json::BatchAllocator::BatchInfo
 buildDefaultRuleString	bamtools/src/utils/bamtools_filter_engine.h	/^inline void FilterEngine<FilterChecker>::buildDefaultRuleString(void) {$/;"	f	class:BamTools::FilterEngine
 buildRuleQueue	bamtools/src/utils/bamtools_filter_engine.h	/^inline void FilterEngine<FilterChecker>::buildRuleQueue(void) {$/;"	f	class:BamTools::FilterEngine
@@ -6055,6 +6059,7 @@ getLocationLineAndColumn	bamtools/src/third_party/jsoncpp/json_reader.cpp	/^Read
 getMemberNames	bamtools/src/third_party/jsoncpp/json_value.cpp	/^Value::getMemberNames() const$/;"	f	class:Json::Value
 getMessage	tclap/CmdLine.h	/^inline std::string& CmdLine::getMessage()$/;"	f	class:TCLAP::CmdLine
 getMismatchInfo	bamalignfunc.cpp	/^int getMismatchInfo(BamAlignment & al, vector<NMStruct>& nmsv, bool printdbginfo){$/;"	f
+getMismatchInfoWithRefSeq	bamalignfunc.cpp	/^int getMismatchInfoWithRefSeq(BamAlignment & al, vector<NMStruct>& nmsv, string refidstr, bool printdbginfo){$/;"	f
 getMutexList	tclap/ZshCompletionOutput.h	/^inline std::string ZshCompletionOutput::getMutexList( CmdLineInterface& _cmd, Arg* a)$/;"	f	class:TCLAP::ZshCompletionOutput
 getName	tclap/Arg.h	/^inline const std::string& Arg::getName() const { return _name; }$/;"	f	class:TCLAP::Arg
 getNextChar	bamtools/src/third_party/jsoncpp/json_reader.cpp	/^Reader::getNextChar()$/;"	f	class:Json::Reader
@@ -7065,6 +7070,7 @@ ref	mutmap.h	/^  string ref;$/;"	m	class:MutInfo
 refB	mutmap.h	/^  int refB;$/;"	m	class:MutInfo
 refF	mutmap.h	/^  int refF;$/;"	m	class:MutInfo
 refFile	refio.cpp	/^gzFile refFile;$/;"	v
+ref_buff	refio.cpp	/^string ref_buff;$/;"	v
 ref_fasta	parseargs.h	/^  std::string ref_fasta;$/;"	m	struct:CallingArgs
 reference	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^  typedef const T& reference;$/;"	t	class:testing::internal::ParamIterator
 reference	bamtools/src/third_party/jsoncpp/json_value.h	/^      typedef Value &reference;$/;"	t	class:Json::ValueIterator
@@ -7186,6 +7192,8 @@ size_t	bamtools/src/third_party/jsoncpp/json_value.h	/^      typedef unsigned in
 skipCommentTokens	bamtools/src/third_party/jsoncpp/json_reader.cpp	/^Reader::skipCommentTokens( Token &token )$/;"	f	class:Json::Reader
 skipSpaces	bamtools/src/third_party/jsoncpp/json_reader.cpp	/^Reader::skipSpaces()$/;"	f	class:Json::Reader
 skipSpaces	bamtools/src/utils/bamtools_filter_ruleparser.h	/^void RuleParser::skipSpaces(void) {$/;"	f	class:BamTools::RuleParser
+skipindel	parseargs.h	/^  bool skipindel;$/;"	m	struct:CallingArgs
+skipindelread	parseargs.h	/^  bool skipindelread;$/;"	m	struct:CallingArgs
 snprintf	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest-all.cc	8605;"	d	file:
 snprintf	bamtools/src/third_party/gtest-1.6.0/src/gtest-printers.cc	59;"	d	file:
 snprintf	bamtools/src/utils/bamtools_options.h	41;"	d

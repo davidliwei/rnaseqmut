@@ -16,7 +16,7 @@ int refseq_init(string filename);
 int refseq_destroy();
 
 
-/* Get the sequence content */
+/* Get the sequence content. a should be 0-based */
 int refseq_getseq(string chrname, long a, int len, string& seq);
 
 #endif

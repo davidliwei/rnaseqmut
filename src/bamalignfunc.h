@@ -65,6 +65,16 @@ Return value:
 int getMismatchInfo(BamAlignment & al, vector<NMStruct>& vnms, bool printdbginfo=false);
  
 
+/* retrieve the mismatch info from a bam alignment using given reference sequence, without using a MD tag
+Parameter:
+  al:	the BamAlignment structure
+  nmsv: the vector of NMStruct to store the results
+  printdbginfo: the parameter to print debug information
+Return value: 
+  0 if success, -1 if error occurs
+*/
+int getMismatchInfoWithRefSeq(BamAlignment & al, vector<NMStruct>& nmsv,string refidstr, bool printdbginfo);
+ 
 
 /* 
 Check whether the given position is  within the range of a read

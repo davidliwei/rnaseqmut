@@ -4,6 +4,7 @@ NOTE: all positions are 0-based. VCF files are 1-based.
 */
 
 #include "bamalignfunc.h"
+#include "refio.h"
 
 void NMStruct::clear(){
 
@@ -67,7 +68,7 @@ int getInsertPos(long read0,  vector<CigarOp>& cgo,
 
 
 /* 
-Convert the relative position in a read (pos) to an absolute position, given the CIGAR character 
+Convert the relative position in a read (pos, 1-based) to an absolute position, given the CIGAR character 
 Return value:
     The real position;
 NOTE: insertions are not counted in the MDTag, but are corrected in the posafterins .
@@ -198,7 +199,7 @@ int getMismatchInfo(BamAlignment & al, vector<NMStruct>& nmsv, bool printdbginfo
       char originbase=al.QueryBases[relposafterins-1];
 
       NMStruct nms;
-      nms.type='S'; nms.pos=realpos; nms.real_pos=realpos;
+      nms.type='S'; nms.pos=realpos; nms.real_pos=realpos; //here, realpos should be 1-based 
       nms.origin=subchar[i]; nms.sub.assign(1,originbase);
       nms.relativepos=relposafterins;
       nms.len=1;
@@ -343,6 +344,68 @@ int posInRead(long read0,  vector<CigarOp>& cgo, long pos ){
     }
   }
   return -1;
+}
+
+
+/* retrieve the mismatch info from a bam alignment using given reference sequence, without using a MD tag
+Parameter:
+  al:	the BamAlignment structure
+  nmsv: the vector of NMStruct to store the results
+  printdbginfo: the parameter to print debug information
+Return value: 
+  0 if success, -1 if error occurs
+*/
+int getMismatchInfoWithRefSeq(BamAlignment & al, vector<NMStruct>& nmsv, string refidstr, bool printdbginfo){
+  long mappos=(long) al.Position;
+  int refid=(int)al.RefID;
+  //uint32_t nmtag=0;
+  int32_t nmtag_i=0;
+  int nmtag=0;
+  if(!al.HasTag("NM")){
+    cerr<<"Error: no NM tag.\n";
+    return -1;
+  }
+  if( !al.GetTag("NM",nmtag_i)){
+     // switch to uint32_t for some versions of BAM
+     uint32_t nmtag_u=0;
+     if( !al.GetTag("NM",nmtag_u)){
+       cerr<<"Error reading NM tags in the read alignment; skipping the reads. NMtag="<<nmtag<<".\n";
+       return -1;
+     }else{
+       nmtag=nmtag_u;
+     }
+  }else{
+    nmtag=nmtag_i;
+  }
+  if(nmtag<1) return 0;
+
+  // CIGAR
+  vector<CigarOp> & co=al.CigarData;
+  string albase=al.QueryBases;
+
+  int relposafterins=0;
+  
+  for(int n=1;n<=albase.size();n++){ // n uses 1 base
+    long realpos=getChrRealPos(mappos,n,co,relposafterins); // the mapped real positions, right now matches exactly the VCF standards
+    string refseq;
+    if(refseq_getseq(refidstr,realpos-1,1,refseq)!=0) continue; // to access the sequence, use 0-base
+    string oriseq=albase.substr(n-1,1); // to access the substr, use 0-base
+    if(oriseq!=refseq){
+      NMStruct nms;
+      nms.type='S'; nms.pos=realpos; nms.real_pos=realpos; //should be 1-base
+      nms.origin=refseq; nms.sub=oriseq;
+      nms.relativepos=relposafterins; // 1-base
+      nms.len=1;
+      nmsv.push_back(nms);
+    }
+  }
+   // print debug information?
+  if(printdbginfo){
+    for(int i=0;i<nmsv.size();i++){
+      cout<<"NMS Type:"<<nmsv[i].type<<" ("<<nmsv[i].origin<<"->"<<nmsv[i].sub<<"), pos:"<<nmsv[i].pos<<",real_pos="<<nmsv[i].real_pos<<", len="<<nmsv[i].len<<", relative: "<<nmsv[i].relativepos<<"; fj="<<nmsv[i].fj<<", bj="<<nmsv[i].bj<<endl; 
+    }
+  }
+  return 0;
 }
 
 

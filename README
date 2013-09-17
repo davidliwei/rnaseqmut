@@ -59,7 +59,9 @@ After compiling is successful, add the "bin/" (or "scripts/", if necessary) dire
 
 rnaseqmut requires sorted BAM files with index (.bai file) as input. Use "samtools sort/index" to sort/index BAM files before running rnaseqmut.
 
-rnaseqmut detects mutations from the NM tag and MD tag in the BAM format (see http://samtools.sourceforge.net/SAMv1.pdf for BAM specification). If the NM or MD tag is missing in your BAM file (this is common if reads are aligned using older RNA-Seq read mapping softwares), you may need to realign them using the latest RNA-Seq read aligners (e.g., Tophat).
+rnaseqmut detects mutations from the NM tag in the BAM format (see http://samtools.sourceforge.net/SAMv1.pdf for BAM specification). By default, if the reference genome is provided, it will use it to infer the mutation (only SNPs, no indels). If the reference genome is not provided (or if the -t/--use_mdtag option is set), it will use the MD tag in the BAM format to infer variants; in this case the MD tag is required in the provided BAM format. 
+
+If the NM (or MD) tag is missing in your BAM file (this is common if reads are aligned using older RNA-Seq read mapping softwares), you may need to realign them using the latest RNA-Seq read aligners (e.g., Tophat).
 
 
 ----------------------------------------------
@@ -70,16 +72,23 @@ The usage of the "core" program, rnaseqmut, and a couple of optional scripts, is
 
 1. rnaseqmut: the core mutation detection program
 
-USAGE:
+USAGE: 
 
-   rnaseqmut  [-r <ref_fasta>] [-l <mutation_list>] [-k] [-d] [-n] [-i
+   rnaseqmut  [-t] [-r <ref_fasta>] [-l <mutation_list>] [-k] [-d] [-n] [-i
               <min_read>] [-m <mut_span>] [--] [--version] [-h] <bam_file>
 
 
-Where:
+Where: 
+
+   -t,  --use_mdtag
+     Use MD Tag to call mutations instead of using reference genome (by
+     -r/--ref_fasta option). This option is automatically set if the
+     reference genome is not provided, and requires the BAM file contains
+     the MD tag.
 
    -r <ref_fasta>,  --ref_fasta <ref_fasta>
-     The (optional) fasta file for the reference genome
+     The (optional) fasta file for the reference genome. When this option
+     is set, -d/--with_indel option will be ignored.
 
    -l <mutation_list>,  --mutation_list <mutation_list>
      The text file of a given, sorted list of mutations. Each line in a
@@ -95,6 +104,7 @@ Where:
    -d,  --with_indel
      Do not skip indels. By default all indels are skipped as most RNA-Seq
      are performed by Illumina sequencing, which is prone to indel errors.
+     This option will be ignored if -r/--ref_fasta option is provided.
 
    -n,  --output_n
      Treat the character N as substitutions.
@@ -114,7 +124,6 @@ Where:
 
    -h,  --help
      Displays usage information and exits.
-
 
    <bam_file>
      (required)  The bam file from which mutation will be called
@@ -227,9 +236,13 @@ rnaseqmut depends on several third-party C++ packages, including bamtools (writt
 ----------------------------------------------
 V.     Version History
 ----------------------------------------------
+
+09/16/2013	0.4	For BAM files with MD tag missing, rnaseqmut now allows inferring mutations directly from the given reference genome. If reference genome is given, rnaseqmut will use it (instead of MD tag) to call mutations.
 09/16/2013	0.3	rnaseqmut allows comparing mutations with reference genome.
 			By default, rnaseqmut will skip all indels and all reads with indels; this behavior can be controlled by -k and -d options. 
 			Fix several bugs.
 09/14/2013	0.2	Fix a bug of failing to read NM tags for some versions of BAM.
                         By default, suppress mutations with character "N" (controlled by -n option in rnaseqmut)
 09/12/2013	0.1	rnaseqmut software initiated.
+
+

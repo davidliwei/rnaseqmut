@@ -27,6 +27,9 @@ struct CallingArgs{
   bool skipindel;
   /* Whether to skip reads with indels */
   bool skipindelread;
+
+  /* Whether to use MD tag to call mutation */
+  bool usemdtag;
 };
 
 /* parsing arguments */

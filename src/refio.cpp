@@ -92,7 +92,7 @@ int refseq_loadchr(string chrname){
   return 0;
 }
 
-/* Get the sequence content */
+/* Get the sequence content. a should be 0-base */
 int refseq_getseq(string chrname, long a, int len, string& seq){
   if(refgenome.count(chrname)==0) return -1;
   if( currentchr != chrname){ 

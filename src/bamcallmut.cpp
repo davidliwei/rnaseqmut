@@ -143,25 +143,32 @@ int main(int argc, char* argv[]){
     prevpos=mappos;
     vnms.clear();
     blackout.clear();
-
-    if(getMismatchInfo(al,vnms,false)!=0){
-      cerr<<"Error in line "<<counter<<endl;
-    }
+    
+    // check if we need to skip this read
     if(!al.IsPrimaryAlignment() || (al.IsPaired() && ! al.IsProperPair() ))continue;
     vector<CigarOp> & cgo= al.CigarData;
+    // check if the read contains indels?
+    if(args.skipindelread){
+      bool hasindel=false;
+      for(int i=0;i<cgo.size();i++){
+        if(cgo[i].Type=='I' || cgo[i].Type=='D') {hasindel=true;break;}
+      }
+      if(hasindel) continue;
+    }
+  
+    int getmismatchret=0;
+    if(!args.usemdtag)
+      getmismatchret=getMismatchInfoWithRefSeq(al,vnms,RVREF[refid].RefName,false);
+    else
+      getmismatchret=getMismatchInfo(al,vnms,false);
+    if(getmismatchret!=0){
+      cerr<<"Error in line "<<counter<<endl;
+    }
     //string mdtag; al.GetTag("MD",mdtag);
     //cout<<"SEQ:"<<al.Name<<", MD tag:"<<mdtag<<",length"<<al.Length<<", CIGAR:"; for(int i=0;i<cgo.size();i++) cout<<cgo[i].Length<<cgo[i].Type<<" "; cout<<endl; 
     //cout<<"dup:"<<al.IsDuplicate()<<",failed:"<<al.IsFailedQC()<<",Mapped:"<<al.IsMapped()<<",second:"<<al.IsSecondMate()<<",MateMapped:"<<al.IsMateMapped()
     //  <<",MateRS:"<<al.IsMateReverseStrand()<<",paired:"<<al.IsPaired()<<",primary:"<<al.IsPrimaryAlignment()<<",proper:"<<al.IsProperPair()<<endl;
     
-    // check if the read contains indels?
-    if(args.skipindelread){
-      bool hasindel=false;
-      for(int i=0;i<vnms.size();i++){
-        if(vnms[i].origin.size()>1 || vnms[i].sub.size()>1) {hasindel=true;break;}
-      }
-      if(hasindel) continue;
-    }
     for(int i=0;i<vnms.size();i++){
       vnms[i].chr_id=refid;
       blackout.insert(vnms[i].real_pos);
