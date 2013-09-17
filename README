@@ -24,9 +24,11 @@ II.    Usage
 
 III.   Demo: detecting mutations from a series of RNA-Seq BAM files
 
-IV.    Acknowledgements
+IV.    Interpreting results
 
-V.     Version History
+V.     Acknowledgements
+
+VI.    Version History
 
 ----------------------------------------------
 I.     Before running rnaseqmut
@@ -225,16 +227,52 @@ A demo script is provided in the demo directory, together with 4 sample RNA-Seq 
 
 A Linux system (with Python3 support) is required to run the full demo. If only core program is needed, you can just run the first 3 or 4 steps. 
 
+In this demo, we provide two normal samples and two tumor samples, and would like to search for mutations that only occurs in one or more tumor samples, but not (or have low frequency) in any of the normal samples. We split this job into five steps:
+
+Step 1, scan the samples individually and get the mutation list for each sample. In this demo we output all possible mutations (those even occur in only 1 RNA-Seq read), but in reality you may just need those with enough read support (controlled by -i/--min_read option).
+
+Step 2, merge the mutation lists from individual samples. This will be the potentially interesting mutations we would like to investigate.
+
+Step 3, scan the samples again, using the provided mutation list in Step 2.
+
+Step 4, merge the mutations in step 3 into a big table. In this table, each row represents a mutation, and columns record the number of supporting reads (and the number of reference reads that do not support this mutation) in all samples. Based on this table, you can use your own criteria to search interesting mutations.
+
+Step 5 illustrates an example of filtering interesting mutations using a python3 script "filtermut.py". In this demo, we define "control" samples as two normal samples, and would like to look for mutations that satisfy the ALL of the following criteria:
+
+--occur in at least 1 non-control sample (controlled by -t/--min-recurrent option in filtermut.py) with at least 20% frequency (controlled by -f/--min-recfrac option) and 10 supporting reads (-d/--min-recread);
+--do not have any supporting reads in control samples (-b/--max-alt); 
+--have at least 4 non-supporting reads (reference reads) in control samples (-a/--min-ref). This requirement will exclude mutations with 0 read coverage in control samples thus we have no idea whether these mutations occur in control samples.
+
+The final output is a VCF file recording mutations and read coverages in all 4 samples. You can also output tab-delimited file instead of VCF file for further downstream analysis (use -z/--no-vcf option in Step 5). For interpreting results, see the next section. 
+
 For more details, refer to the demo script and the usage of each programs/scripts.
 
+
 ----------------------------------------------
-IV.    Acknowledgements
+IV.    Interpreting results
+----------------------------------------------
+rnaseqmut will send a tab-delimited file, each line representing one possible mutation. For example,
+
+chr1    4776457 A       C       135     56      1       0
+
+This mutation occurs at chr1:4776457, and it is A to C mutation. The next 4 numbers are the number of reference reads (forward), reference reads (backward), alternative reads (forward) and alternative reads (backward).
+
+If you merge mutations in N samples (as in Step 4 in the demo), there will be 4*N numeric columns following the first 4 column with the exact meaning as in single sample. The order is determined by the order of the input files.
+
+For the script "filtermut.py" in demo Step 5, a VCF file format is provided. We use the "DP4" field in standard VCF file format to record the 4 numbers in each sample. For example,
+
+chr1    4782642 .       T       G       1.0     NORMAL1.DP4=266,217,0,0;NORMAL2.DP4=264,215,0,0;TUMOR1.DP4=390,251,17,1;TUMOR2.DP4=249,184,15,0;
+
+
+
+----------------------------------------------
+V.    Acknowledgements
 ----------------------------------------------
 
 rnaseqmut depends on several third-party C++ packages, including bamtools (written by Derek Barnett, https://github.com/pezmaster31/bamtools), TCLAP (Templatized C++ Command Line Parser Library, written by Michael E. Smoot, http://tclap.sourceforge.net/), FASTA/FASTQ parser in C (by Heng Li, http://lh3lh3.users.sourceforge.net/parsefastq.shtml). The source codes of these packages are included in rnaseqmut source code.
 
 ----------------------------------------------
-V.     Version History
+VI.     Version History
 ----------------------------------------------
 
 09/16/2013	0.4	For BAM files with MD tag missing, rnaseqmut now allows inferring mutations directly from the given reference genome. If reference genome is given, rnaseqmut will use it (instead of MD tag) to call mutations.
