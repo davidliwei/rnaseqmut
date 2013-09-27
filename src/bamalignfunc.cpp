@@ -387,6 +387,7 @@ int getMismatchInfoWithRefSeq(BamAlignment & al, vector<NMStruct>& nmsv, string 
   
   for(int n=1;n<=albase.size();n++){ // n uses 1 base
     long realpos=getChrRealPos(mappos,n,co,relposafterins); // the mapped real positions, right now matches exactly the VCF standards
+    if(realpos==-1) return 0;
     string refseq;
     if(refseq_getseq(refidstr,realpos-1,1,refseq)!=0) continue; // to access the sequence, use 0-base
     string oriseq=albase.substr(n-1,1); // to access the substr, use 0-base
