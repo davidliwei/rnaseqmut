@@ -56,10 +56,10 @@ int getInsertPos(long read0,  vector<CigarOp>& cgo,
       case 'P':
       case '=':
       case 'X':
-        cerr<<"Error: CIGAR operator H, S, P, = and X are not supported currently.\n";
+        //cerr<<"Error: CIGAR operator H, S, P, = and X are not supported currently.\n";
         return -1;
       default:
-        cerr<<"Error: unrecognized CIGAR character "<<cgo[i].Type<<endl;
+        //cerr<<"Error: unrecognized CIGAR character "<<cgo[i].Type<<endl;
         return -1;
     }
   }
@@ -100,7 +100,7 @@ long getChrRealPos(long read0, int pos, vector<CigarOp>& cgo, int& posafterins){
       case 'P':
       case '=':
       case 'X':
-        cerr<<"Error: CIGAR operator H, S, P, = and X are not supported currently.\n";
+        //cerr<<"Error: CIGAR operator H, S, P, = and X are not supported currently.\n";
         return -1;
       default:
         cerr<<"Error: unrecognized CIGAR character "<<cgo[i].Type<<endl;
@@ -336,7 +336,7 @@ int posInRead(long read0,  vector<CigarOp>& cgo, long pos ){
       case 'P':
       case '=':
       case 'X':
-        cerr<<"Error: CIGAR operator H, S, P, = and X are not supported currently.\n";
+        //cerr<<"Error: CIGAR operator H, S, P, = and X are not supported currently.\n";
         return -1;
       default:
         cerr<<"Error: unrecognized CIGAR character "<<cgo[i].Type<<endl;

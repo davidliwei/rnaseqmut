@@ -108,6 +108,7 @@ int main(int argc, char* argv[]){
     long mappos=(long) al.Position;
     int refid=(int)al.RefID;
     
+    if(refid<0 || refid >=RVREF.size())continue;
     // update stored mutations before the current position
     if( prevrefid!=refid){
       string refidstr=RVREF[refid].RefName;
@@ -195,7 +196,7 @@ int main(int argc, char* argv[]){
     mtmp_itr->addOneRefAlign(thisrefrec);
 
   }
-  if(prevrefid!=-1){
+  if(prevrefid>=0 && prevrefid <RVREF.size()){
     if(!mutation_given){
       updateMutPos(*mtmp_itr,LONG_MAX,RVREF[prevrefid].RefName,args);
     }else{
@@ -209,9 +210,9 @@ int main(int argc, char* argv[]){
            if( (givenmut_itr->second).mvm.size()>0){
              updateMutPos(givenmut_itr->second, LONG_MAX, givenmut_itr->first,args);
            }
-        }
-    }
-  }
+        }//end for
+    }//end if
+  }//end if
   reader.Close();
   if(args.has_fasta){
     refseq_destroy();
