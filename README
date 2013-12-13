@@ -271,12 +271,14 @@ V.    Acknowledgements
 
 rnaseqmut depends on several third-party C++ packages, including bamtools (written by Derek Barnett, https://github.com/pezmaster31/bamtools), TCLAP (Templatized C++ Command Line Parser Library, written by Michael E. Smoot, http://tclap.sourceforge.net/), FASTA/FASTQ parser in C (by Heng Li, http://lh3lh3.users.sourceforge.net/parsefastq.shtml). The source codes of these packages are included in rnaseqmut source code.
 
+We thank Chenfei Wang and Robert K. Bradley for their help and feedback.
+
 ----------------------------------------------
 VI.     Version History
 ----------------------------------------------
 12/11/2013	0.5	Fix compilation option so running the program does not require dynamic linking of libbamtools library.
 			Fix a bug that some mutations in the provided list are not printed due to the missing chromosome name in BAM file.
-			
+			A linux X64 binary is provided.
 10/12/2013	0.4.1	Fix a bug that causes the program to quit due to the index of the reference genome.
 			Suppress error messages due to the incompatible CIGAR letter.
 
