@@ -98,7 +98,7 @@ int MutMap::updateRefRecord(long pos){
       int bccnt=rr.blackout.count(itr->first);
       if(bccnt>0) continue;
       int pir=posInRead(rr.start_pos,rr.CigarData, itr->first);
-      //cout<<"-- "<<itr->first<<" in read beginning with "<<rr.start_pos<<": "<<pir<<endl;
+      //cout<<"-- "<<itr->first<<" in read beginning with "<<rr.start_pos<<": "<<pir<<", allrefrec.size()="<<allrefrec.size()<<endl;
       if(pir==-1) continue;
       vector<MutInfo>& cvm=itr->second;
       for(int i=0;i<cvm.size();i++){

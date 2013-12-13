@@ -274,6 +274,9 @@ rnaseqmut depends on several third-party C++ packages, including bamtools (writt
 ----------------------------------------------
 VI.     Version History
 ----------------------------------------------
+12/11/2013	0.5	Fix compilation option so running the program does not require dynamic linking of libbamtools library.
+			Fix a bug that some mutations in the provided list are not printed due to the missing chromosome name in BAM file.
+			
 10/12/2013	0.4.1	Fix a bug that causes the program to quit due to the index of the reference genome.
 			Suppress error messages due to the incompatible CIGAR letter.
 

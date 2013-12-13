@@ -103,8 +103,8 @@ int refseq_getseq(string chrname, long a, int len, string& seq){
   }
   
   // update string buffer
-  long b=a+len;
-  if(a<=buff_a || a >= buff_b || b <= buff_a || b >= buff_b){
+  long b=a+len-1;
+  if(a<buff_a || a > buff_b || b < buff_a || b > buff_b){
     //get the reference sequence 
     buff_a=a-buff_a_size;
     if (buff_a <0) buff_a=0;
@@ -114,6 +114,7 @@ int refseq_getseq(string chrname, long a, int len, string& seq){
     string nstr(refseq->seq.s,buff_a,buff_b-buff_a+1);
     ref_buff=nstr;
   }
+  if(a<buff_a || a > buff_b || b < buff_a || b > buff_b) return -1;
   seq=ref_buff.substr(a-buff_a,len);
   // to upper case
   for(int k=0;k<seq.size();k++) 

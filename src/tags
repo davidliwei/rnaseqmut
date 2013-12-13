@@ -5380,6 +5380,7 @@ addProperty	bamtools/src/utils/bamtools_filter_engine.h	/^inline bool FilterEngi
 addToList	tclap/Arg.h	/^inline void Arg::addToList( std::list<Arg*>& argList ) const$/;"	f	class:TCLAP::Arg
 addToList	tclap/UnlabeledMultiArg.h	/^void UnlabeledMultiArg<T>::addToList( std::list<Arg*>& argList ) const$/;"	f	class:TCLAP::UnlabeledMultiArg
 addToList	tclap/UnlabeledValueArg.h	/^void UnlabeledValueArg<T>::addToList( std::list<Arg*>& argList ) const$/;"	f	class:TCLAP::UnlabeledValueArg
+alignmentToMutation	bamcallmut.cpp	/^int alignmentToMutation(BamAlignment& al, bool mutation_given, MutMap& mtmp, CallingArgs& args){$/;"	f
 all	bamtools/src/third_party/jsoncpp/json_reader.cpp	/^Features::all()$/;"	f	class:Json::Features
 allPropertyNames	bamtools/src/utils/bamtools_filter_engine.h	/^inline const std::vector<std::string> FilterEngine<FilterChecker>::allPropertyNames(void) {$/;"	f	class:BamTools::FilterEngine
 allocate	bamtools/src/third_party/jsoncpp/json_batchallocator.h	/^   AllocatedType *allocate()$/;"	f	class:Json::BatchAllocator
@@ -5709,6 +5710,7 @@ deleteOnExit	tclap/CmdLine.h	/^inline void CmdLine::deleteOnExit(Arg* ptr)$/;"	f
 deleteOnExit	tclap/CmdLine.h	/^inline void CmdLine::deleteOnExit(Visitor* ptr)$/;"	f	class:TCLAP::CmdLine
 delimiter	tclap/Arg.h	/^		static char delimiter() { return delimiterRef(); }$/;"	f	class:TCLAP::Arg
 delimiterRef	tclap/Arg.h	/^		static char& delimiterRef() { static char delim = ' '; return delim; }$/;"	f	class:TCLAP::Arg
+denovoMutFinding	bamcallmut.cpp	/^int denovoMutFinding(BamReader& reader, CallingArgs & args){$/;"	f
 depart	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^  bool depart() {$/;"	f	class:testing::internal::linked_ptr_internal
 depart	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^  void depart() {$/;"	f	class:testing::internal::linked_ptr
 description	tclap/ValuesConstraint.h	/^std::string ValuesConstraint<T>::description() const$/;"	f	class:TCLAP::ValuesConstraint
@@ -6700,6 +6702,7 @@ minInt	bamtools/src/third_party/jsoncpp/json_value.cpp	/^const Int Value::minInt
 minInt	bamtools/src/third_party/jsoncpp/json_value.h	/^      static const Int minInt;$/;"	m	class:Json::Value
 min_read	parseargs.h	/^  int min_read;$/;"	m	struct:CallingArgs
 missingArgsException	tclap/CmdLine.h	/^inline void CmdLine::missingArgsException()$/;"	f	class:TCLAP::CmdLine
+mutFindingWithGivenMutation	bamcallmut.cpp	/^int mutFindingWithGivenMutation(BamReader& reader, CallingArgs & args){$/;"	f
 mut_span	parseargs.h	/^  int mut_span;$/;"	m	struct:CallingArgs
 mutation_given	parseargs.h	/^  bool mutation_given;$/;"	m	struct:CallingArgs
 mutex_	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest-all.cc	/^  Mutex mutex_;  \/\/ protects all internal state$/;"	m	class:testing::internal::OsStackTraceGetter	file:
@@ -7533,6 +7536,7 @@ usage	tclap/DocBookOutput.h	/^inline void DocBookOutput::usage(CmdLineInterface&
 usage	tclap/StdOutput.h	/^inline void StdOutput::usage(CmdLineInterface& _cmd ) $/;"	f	class:TCLAP::StdOutput
 usage	tclap/ZshCompletionOutput.h	/^inline void ZshCompletionOutput::usage(CmdLineInterface& _cmd )$/;"	f	class:TCLAP::ZshCompletionOutput
 used_	bamtools/src/third_party/jsoncpp/json_batchallocator.h	/^      AllocatedType *used_;$/;"	m	struct:Json::BatchAllocator::BatchInfo
+usemdtag	parseargs.h	/^  bool usemdtag;$/;"	m	struct:CallingArgs
 v10_	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^  const T10 v10_;$/;"	m	class:testing::internal::ValueArray10
 v10_	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^  const T10 v10_;$/;"	m	class:testing::internal::ValueArray11
 v10_	bamtools/src/third_party/gtest-1.6.0/fused-src/gtest/gtest.h	/^  const T10 v10_;$/;"	m	class:testing::internal::ValueArray12
