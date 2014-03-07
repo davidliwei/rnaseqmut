@@ -14,7 +14,7 @@ rnaseqmut is a light-weight C++ program to detect variants (or mutations, includ
   (2) For a user-defined mutation list, calculate the read coverage, including reads that support reference allele (reference reads) and alternative allele (alternative reads), from a given BAM file; 
   (3) For a series of RNA-Seq samples, filter interesting mutations based on user-defined criteria.
 
-This software package includes a "core" C++ program, rnaseqmut, to call variants from a single BAM file, and a series of optional scripts, written in Python3 and bash, to identify putative interesting mutations in a group of RNA-Seq samples. 
+This software package includes a "core" C++ program, rnaseqmut, to call variants from a single BAM file, and a series of optional scripts, written in Python and bash, to identify putative interesting mutations in a group of RNA-Seq samples. 
 
 Besides mutation detection from RNA-Seq, the "core" program (rnaseqmut) can also be used to call mutations from other high-throughput sequencing platforms, including ChIP-seq, DNA-Seq, etc.
 
@@ -36,7 +36,16 @@ I.     Before running rnaseqmut
 
 1. System requirements
 
-To run the "core" program, only C++ compiler (gcc version >4.1) is needed. To use the supplementary scripts including demo, Linux system with Python3 support is required.
+For the "core" program, you can either use the provided binary directly (for Linux and Mac OS 64 bit system), or compile the program from the source code. To use the binary directly, rename the corresponding executable to "rnaseqmut". For example, if you are Mac OS 64 bit user, go into the bin directory, and type:
+
+  mv rnaseqmut.macos.x64 rnaseqmut
+
+and refer to I.3 for installation. 
+
+To compile the "core" program, only C++ compiler (gcc version >4.1) is needed. 
+
+To use the supplementary scripts including demo, Linux system with Python (>=2.7) support is required.
+
 
 2. Compiling
 
@@ -73,11 +82,11 @@ II.    Usage
 The usage of the "core" program, rnaseqmut, and a couple of optional scripts, is listed below.
 
 1. rnaseqmut: the core mutation detection program
-
 USAGE: 
 
-   rnaseqmut  [-t] [-r <ref_fasta>] [-l <mutation_list>] [-k] [-d] [-n] [-i
-              <min_read>] [-m <mut_span>] [--] [--version] [-h] <bam_file>
+   ./rnaseqmut  [-t] [-r <ref_fasta>] [-l <mutation_list>] [-k] [-d] [-s
+                <max_mismatch>] [-n] [-i <min_read>] [-m <mut_span>] [--]
+                [--version] [-h] <bam_file>
 
 
 Where: 
@@ -108,6 +117,10 @@ Where:
      are performed by Illumina sequencing, which is prone to indel errors.
      This option will be ignored if -r/--ref_fasta option is provided.
 
+   -s <max_mismatch>,  --max_mismatch <max_mismatch>
+     The maximum number of mismatches in a read. Reads with more number of
+     mismatches will be discarded. Default 1.
+
    -n,  --output_n
      Treat the character N as substitutions.
 
@@ -129,9 +142,6 @@ Where:
 
    <bam_file>
      (required)  The bam file from which mutation will be called
-
-
-   Calling mutations in BAM file.
 
 
 2. merge2ndvcf.py: (optional) merging mutations from multiple RNA-Seq scans.
@@ -225,7 +235,7 @@ III.   Demo: detecting mutations from a series of RNA-Seq BAM files
 ----------------------------------------------
 A demo script is provided in the demo directory, together with 4 sample RNA-Seq BAM files. This demo illustrates the basic usage of rnaseqmut, including calling de-novo mutations, merging mutations from different samples, calling mutations based on a given list of mutations, and filtering mutations.
 
-A Linux system (with Python3 support) is required to run the full demo. If only core program is needed, you can just run the first 3 or 4 steps. 
+A Linux system (with Python support) is required to run the full demo. If only core program is needed, you can just run the first 3 or 4 steps. 
 
 In this demo, we provide two normal samples and two tumor samples, and would like to search for mutations that only occurs in one or more tumor samples, but not (or have low frequency) in any of the normal samples. We split this job into five steps:
 
@@ -237,7 +247,7 @@ Step 3, scan the samples again, using the provided mutation list in Step 2.
 
 Step 4, merge the mutations in step 3 into a big table. In this table, each row represents a mutation, and columns record the number of supporting reads (and the number of reference reads that do not support this mutation) in all samples. Based on this table, you can use your own criteria to search interesting mutations.
 
-Step 5 illustrates an example of filtering interesting mutations using a python3 script "filtermut.py". In this demo, we define "control" samples as two normal samples, and would like to look for mutations that satisfy the ALL of the following criteria:
+Step 5 illustrates an example of filtering interesting mutations using a python script "filtermut.py". In this demo, we define "control" samples as two normal samples, and would like to look for mutations that satisfy the ALL of the following criteria:
 
 --occur in at least 1 non-control sample (controlled by -t/--min-recurrent option in filtermut.py) with at least 20% frequency (controlled by -f/--min-recfrac option) and 10 supporting reads (-d/--min-recread);
 --do not have any supporting reads in control samples (-b/--max-alt); 
@@ -276,18 +286,26 @@ We thank Chenfei Wang and Robert K. Bradley for their help and feedback.
 ----------------------------------------------
 VI.     Version History
 ----------------------------------------------
+03/08/2014  0.6 Add a "-s" option to control the number of mutations allowed in a read.
+                For the script, switch from python3 to python 2.7
+                Add a binary executable for Mac OS X64 system
+
 12/11/2013	0.5	Fix compilation option so running the program does not require dynamic linking of libbamtools library.
-			Fix a bug that some mutations in the provided list are not printed due to the missing chromosome name in BAM file.
-			A linux X64 binary is provided.
+                Fix a bug that some mutations in the provided list are not printed due to the missing chromosome name in BAM file.
+                A linux X64 binary is provided.
+
 10/12/2013	0.4.1	Fix a bug that causes the program to quit due to the index of the reference genome.
-			Suppress error messages due to the incompatible CIGAR letter.
+			          Suppress error messages due to the incompatible CIGAR letter.
 
 09/16/2013	0.4	For BAM files with MD tag missing, rnaseqmut now allows inferring mutations directly from the given reference genome. If reference genome is given, rnaseqmut will use it (instead of MD tag) to call mutations.
+
 09/16/2013	0.3	rnaseqmut allows comparing mutations with reference genome.
-			By default, rnaseqmut will skip all indels and all reads with indels; this behavior can be controlled by -k and -d options. 
-			Fix several bugs.
+                By default, rnaseqmut will skip all indels and all reads with indels; this behavior can be controlled by -k and -d options. 
+                Fix several bugs.
+
 09/14/2013	0.2	Fix a bug of failing to read NM tags for some versions of BAM.
-                        By default, suppress mutations with character "N" (controlled by -n option in rnaseqmut)
+                By default, suppress mutations with character "N" (controlled by -n option in rnaseqmut)
+
 09/12/2013	0.1	rnaseqmut software initiated.
 
 

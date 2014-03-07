@@ -26,7 +26,7 @@ int findRecord(vector<MutInfo>& cvm, string ref, string alt, bool add){
   return recid;
 }
  
-  /* Add one mutation specified by pos:ref->alt */
+/* Add one mutation specified by pos:ref->alt */
 int MutMap::addOneMut(long pos, string ref, string alt, bool forward,bool createifnoexist,int increment){
   
   vector<MutInfo>& cvm = mvm[pos];

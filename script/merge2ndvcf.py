@@ -2,6 +2,7 @@
 '''
 Merge VCF files into a big table (or VCF) file.
 '''
+from __future__ import print_function
 import sys;
 import re;
 import argparse;

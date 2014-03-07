@@ -11,7 +11,7 @@ using namespace TCLAP;
 /* parsing arguments */
 int parseArguments(int argc, char* argv[],CallingArgs& args){
   try{
-    CmdLine cmd("Calling mutations in BAM file.",' ',"4.2");
+    CmdLine cmd("Calling mutations in BAM file.",' ',"0.6");
     
     ValueArg<int> mutspanarg("m","mut_span","The minimum distance of the mutation to the beginning (end) of the read. Default 4.",false,4,"mut_span");
     cmd.add(mutspanarg);
@@ -19,6 +19,8 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
     cmd.add(minreadarg);
     SwitchArg hasnarg("n","output_n","Treat the character N as substitutions.");
     cmd.add(hasnarg);
+    ValueArg<int> mismatcharg("s","max_mismatch","The maximum number of mismatches in a read. Reads with more number of mismatches will be discarded. Default 1.",false,1,"max_mismatch");
+    cmd.add(mismatcharg);
 
     SwitchArg indelarg("d","with_indel","Do not skip indels. By default all indels are skipped as most RNA-Seq are performed by Illumina sequencing, which is prone to indel errors. This option will be ignored if -r/--ref_fasta option is provided.");
     cmd.add(indelarg);
@@ -49,6 +51,7 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
     args.skipindel=!indelarg.getValue();
     args.skipindelread=!indelreadarg.getValue();
     args.usemdtag=mdtagarg.getValue();
+    args.max_mismatch=mismatcharg.getValue();
     
     args.ref_fasta=reffilearg.getValue();
     if(args.ref_fasta != ""){
@@ -67,6 +70,7 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
     cerr<<"Mut span:"<<args.mut_span<<endl;
     cerr<<"Mutation list:"<<args.mutfile<<endl;
     cerr<<"Min read:"<<args.min_read<<endl;
+    cerr<<"Max mismatch:"<<args.max_mismatch<<endl;
     cerr<<"Reference genome:"<<args.ref_fasta<<endl;
   }catch(ArgException &e){
     cerr<<"error: "<<e.error()<<" for arg "<<e.argId();

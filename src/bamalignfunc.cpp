@@ -130,8 +130,7 @@ int parseSubFromMDTag(BamAlignment & al, string tag, vector<int>& subpos, vector
     do{
       ss>>c;
       afterpos.push_back(c);
-    }
-    while(!ss.eof() && (c<'0' || c >'9'));
+    }while(!ss.eof() && (c<'0' || c >'9'));
     ss.putback(c);
     //pos and afterpos[-1] are positions, sub chars
     if(afterpos.size()>0){

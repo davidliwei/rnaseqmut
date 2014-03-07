@@ -96,7 +96,9 @@ int alignmentToMutation(BamAlignment& al, bool mutation_given, MutMap& mtmp, Cal
     //cout<<"SEQ:"<<al.Name<<", MD tag:"<<mdtag<<",length"<<al.Length<<", CIGAR:"; for(int i=0;i<cgo.size();i++) cout<<cgo[i].Length<<cgo[i].Type<<" "; cout<<endl; 
     //cout<<"dup:"<<al.IsDuplicate()<<",failed:"<<al.IsFailedQC()<<",Mapped:"<<al.IsMapped()<<",second:"<<al.IsSecondMate()<<",MateMapped:"<<al.IsMateMapped()
     //  <<",MateRS:"<<al.IsMateReverseStrand()<<",paired:"<<al.IsPaired()<<",primary:"<<al.IsPrimaryAlignment()<<",proper:"<<al.IsProperPair()<<endl;
-    
+    if(vnms.size()>args.max_mismatch){// if too many mismatches: skip
+      return 0;
+    } 
     for(int i=0;i<vnms.size();i++){
       vnms[i].chr_id=refid;
       blackout.insert(vnms[i].real_pos);
@@ -110,7 +112,7 @@ int alignmentToMutation(BamAlignment& al, bool mutation_given, MutMap& mtmp, Cal
           cerr<<"Error: incorrect REF sequence in "<<RVREF[refid].RefName<<":"<<vnms[i].pos<<" (real:"<<vnms[i].real_pos<<"), given "<<vnms[i].origin<<", should be "<<mutinrefseq<<". Check the reference genome or MD tag of your BAM file."<<endl;
         }
       }
-      mtmp.addOneMut( vnms[i].real_pos, vnms[i].origin, vnms[i].sub, isrev,!mutation_given,1);
+      mtmp.addOneMut(vnms[i].real_pos, vnms[i].origin, vnms[i].sub, isrev,!mutation_given,1);
     }
     
     // update ref alignment

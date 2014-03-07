@@ -66,7 +66,7 @@ done
 # only mutations with at least 4 alternative reads support is kept (by default of merge2ndvcf.py)
 echo ""
 echo "####### Step 4, merging mutations in Step 3 into a big table  ##########"
-CMD="python3 $BASEPATH/script/merge2ndvcf.py -l $LABELS results/*.2nd.txt > results/ALLMUT.txt" 
+CMD="python $BASEPATH/script/merge2ndvcf.py -l $LABELS results/*.2nd.txt > results/ALLMUT.txt" 
 echo "#### COMMAND LINE: $CMD"
 eval $CMD
 
@@ -81,7 +81,7 @@ CONTROLGROUP="0,1"
 
 # By default, filtermut.py will only keep mutations that occur in at least 1 non-control sample (-t option) with 20% frequency (-f) and 10 alternative read support (-d) , excluding those that also occur in control samples (-a) or does not have enough read coverage in control samples (-b)
 
-CMD="python3 $BASEPATH/script/filtermut.py -d 10 -f 0.0 -b 0 -c $CONTROLGROUP  -l $LABELS < results/ALLMUT.txt > results/ALLMUT_FILTERED.vcf"
+CMD="python $BASEPATH/script/filtermut.py -d 10 -f 0.0 -b 0 -c $CONTROLGROUP  -l $LABELS < results/ALLMUT.txt > results/ALLMUT_FILTERED.vcf"
 echo "#### COMMAND LINE: $CMD"
 eval $CMD
 

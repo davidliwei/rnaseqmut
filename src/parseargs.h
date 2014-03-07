@@ -30,6 +30,9 @@ struct CallingArgs{
 
   /* Whether to use MD tag to call mutation */
   bool usemdtag;
+
+  /* Maximum number of mismatches */
+  int max_mismatch;
 };
 
 /* parsing arguments */
