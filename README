@@ -286,7 +286,7 @@ We thank Chenfei Wang and Robert K. Bradley for their help and feedback.
 ----------------------------------------------
 VI.     Version History
 ----------------------------------------------
-03/08/2014  0.6 Add a "-s" option to control the number of mutations allowed in a read.
+03/08/2014	0.6 Add a "-s" option to control the number of mutations allowed in a read.
                 For the script, switch from python3 to python 2.7
                 Add a binary executable for Mac OS X64 system
 
