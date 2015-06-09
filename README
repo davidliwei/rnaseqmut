@@ -286,6 +286,9 @@ We thank Chenfei Wang and Robert K. Bradley for their help and feedback.
 ----------------------------------------------
 VI.     Version History
 ----------------------------------------------
+06/09/2015  0.7 Fix a bug of calculating CIGAR strings.
+                Fix a bug of reporting indel reads.
+
 03/08/2014	0.6 Add a "-s" option to control the number of mutations allowed in a read.
                 For the script, switch from python3 to python 2.7
                 Add a binary executable for Mac OS X64 system

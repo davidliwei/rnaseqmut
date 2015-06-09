@@ -50,6 +50,9 @@ int updateMutPos(MutMap& mtmp, long mappos, string refseq, CallingArgs& args){
       }
       if(outputmut)
         printMutation(refseq,itr->first,vmpt[j]);
+      else{
+        //cout<<" mutation "<<vmpt[j].ref<<" -> "<<vmpt[j].alt<<" skipped. skip indel: "<<args.skipindel<<"\n";
+      }
     }
   }
   // update the map information
@@ -92,6 +95,9 @@ int alignmentToMutation(BamAlignment& al, bool mutation_given, MutMap& mtmp, Cal
       cerr<<"Error: cannot obtain mutaiton information.\n";
       return -1;
     }
+    //if(vnms.size()>=0) cout<<"mutation with size "<<vnms.size()<<" found.";
+    //for(int i=0; i<cgo.size();i++) cout<<cgo[i].Type<<cgo[i].Length<<";"; cout<<endl;
+    
     //string mdtag; al.GetTag("MD",mdtag);
     //cout<<"SEQ:"<<al.Name<<", MD tag:"<<mdtag<<",length"<<al.Length<<", CIGAR:"; for(int i=0;i<cgo.size();i++) cout<<cgo[i].Length<<cgo[i].Type<<" "; cout<<endl; 
     //cout<<"dup:"<<al.IsDuplicate()<<",failed:"<<al.IsFailedQC()<<",Mapped:"<<al.IsMapped()<<",second:"<<al.IsSecondMate()<<",MateMapped:"<<al.IsMateMapped()
@@ -136,13 +142,14 @@ int denovoMutFinding(BamReader& reader, CallingArgs & args){
   long counter=0;
   long prevpos=-1;
   int prevrefid=-1;
+  int nreport=10000;
 
   MutMap mtmp_0;
   MutMap* mtmp_itr=& mtmp_0;
 
   while(reader.GetNextAlignment(al)){
     counter++;
-    if(counter%1000000 ==1)cerr<<counter<<"...\n";
+    if(counter%nreport==1)cerr<<counter<<"...\n";
     long mappos=(long) al.Position;
     int refid=(int)al.RefID;
     

@@ -57,7 +57,7 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
     if(args.ref_fasta != ""){
       args.has_fasta = true;
       if(refseq_init(args.ref_fasta)==-1) return -1;
-      args.skipindel=true;
+      //args.skipindel=true;
     }
     else{
       args.has_fasta = false;

@@ -89,9 +89,19 @@ long getChrRealPos(long read0, int pos, vector<CigarOp>& cgo, int& posafterins){
         tojump+=cgo[i].Length;
         break;
       case 'I': // insertion relative to the reference; do not count towards the relative positions
-        relpos+=cgo[i].Length;
-        posafterins+=cgo[i].Length; // correct for pos considering insertions
-        break;
+        if(relpos+cgo[i].Length >= pos) {
+          int jumppos=pos-relpos;
+          relpos+=jumppos;
+          posafterins+=jumppos;
+          tojump-=jumppos;
+          quitfor=true;
+          break;
+        }else{
+          relpos+=cgo[i].Length;
+          posafterins+=cgo[i].Length; // correct for pos considering insertions
+          tojump-=cgo[i].Length; // correct for insertion
+          break;
+        }
       case 'D': // deletion relative to the reference; jump 1 base
         tojump+=cgo[i].Length;
         break;
@@ -384,19 +394,70 @@ int getMismatchInfoWithRefSeq(BamAlignment & al, vector<NMStruct>& nmsv, string 
 
   int relposafterins=0;
   
+  int prevrealpos=-1; // previous real positions; used to determine possible in/del events
+  NMStruct nms;
+  bool is_cont_insertion=false; // marker for continuous insertions
   for(int n=1;n<=albase.size();n++){ // n uses 1 base
     long realpos=getChrRealPos(mappos,n,co,relposafterins); // the mapped real positions, right now matches exactly the VCF standards
     if(realpos==-1) return 0;
-    string refseq;
-    if(refseq_getseq(refidstr,realpos-1,1,refseq)!=0) continue; // to access the sequence, use 0-base
     string oriseq=albase.substr(n-1,1); // to access the substr, use 0-base
-    if(oriseq!=refseq){
-      NMStruct nms;
-      nms.type='S'; nms.pos=realpos; nms.real_pos=realpos; //should be 1-base
-      nms.origin=refseq; nms.sub=oriseq;
-      nms.relativepos=relposafterins; // 1-base
-      nms.len=1;
-      nmsv.push_back(nms);
+    string refseq;
+    if(realpos==prevrealpos+1){ // substitution events
+      if(is_cont_insertion) nmsv.push_back(nms);
+      if(refseq_getseq(refidstr,realpos-1,1,refseq)!=0) continue; // to access the sequence, use 0-base
+      if(oriseq!=refseq){
+        nms.type='S'; nms.pos=realpos; nms.real_pos=realpos; //should be 1-base
+        nms.origin=refseq; nms.sub=oriseq;
+        nms.relativepos=relposafterins; // 1-base
+        nms.len=1;
+        nmsv.push_back(nms);
+      }else{
+        nms.type=' ';
+      }
+      is_cont_insertion=false;
+    }else if(prevrealpos!=-1){ 
+      // process possible indel events
+      if(prevrealpos==realpos){
+        //insertion
+        if(is_cont_insertion==false){
+          nms.type='I'; nms.pos=realpos; nms.real_pos=realpos; //should be 1-base
+          nms.origin=""; nms.sub=oriseq;
+          nms.relativepos=relposafterins; // 1-base
+          nms.len=1;
+        }else{
+          nms.sub+=oriseq;
+          //nms.relativepos=relposafterins; // 1-base
+          nms.len+=1;
+        }
+        is_cont_insertion=true;
+        //nmsv.push_back(nms);
+      }else if(realpos > prevrealpos+1){
+        if(is_cont_insertion) nmsv.push_back(nms);
+        // reference seq jump ahead: deletion
+        int reflen=realpos-(prevrealpos+1);
+        if(refseq_getseq(refidstr,prevrealpos+1-1,reflen,refseq)!=0) continue; // to access the sequence, use 0-base
+        nms.type='D'; nms.pos=realpos; nms.real_pos=realpos; //should be 1-base
+        nms.origin=refseq; nms.sub="";
+        nms.relativepos=relposafterins; // 1-base
+        nms.len=1;
+        nmsv.push_back(nms);
+        is_cont_insertion=false;
+      }else{
+        if(is_cont_insertion) nmsv.push_back(nms);
+        nms.type=' ';
+        is_cont_insertion=false;
+      }
+    }
+    prevrealpos=realpos;
+    if(printdbginfo){
+      cout<<"n="<<n<<", realpos:"<<realpos<<", posafterins:"<<relposafterins<<", original seq: "<<oriseq<<", refseq:"<<refseq; 
+      if(nms.type=='S')
+        cout<<" --NM "<<nms.origin<<" ->"<<nms.sub; 
+      else if(nms.type=='I')
+        cout<<" --INS "<<nms.origin<<" ->"<<nms.sub; 
+      else if(nms.type=='D')
+        cout<<" --DEL "<<nms.origin<<" ->"<<nms.sub; 
+      cout<<endl;
     }
   }
    // print debug information?
