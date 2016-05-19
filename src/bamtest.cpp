@@ -40,10 +40,17 @@ int main(int argc, char* argv[]){
     
     uint32_t nmtag=0;
     if(al.HasTag("NM")){
-      //char tc='0';al.GetTagType("NM",tc); if(tc!='C')cout<<tc<<endl;
       if(!al.GetTag("NM",nmtag)){
         continue;
       }   
+    }else{
+      if(al.HasTag("nM")){
+        if(!al.GetTag("nM",nmtag)){
+          continue;
+        }   
+      }else{
+          continue;
+      }
     }
     if(nmtag<1) continue;
     //MD type

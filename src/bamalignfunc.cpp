@@ -165,21 +165,37 @@ int getMismatchInfo(BamAlignment & al, vector<NMStruct>& nmsv, bool printdbginfo
   //uint32_t nmtag=0;
   int32_t nmtag_i=0;
   int nmtag=0;
-  if(!al.HasTag("NM")){
-    cerr<<"Error: no NM tag.\n";
-    return -1;
-  }
-  if( !al.GetTag("NM",nmtag_i)){
-     // switch to uint32_t for some versions of BAM
-     uint32_t nmtag_u=0;
-     if( !al.GetTag("NM",nmtag_u)){
-       cerr<<"Error reading NM tags in the read alignment; skipping the reads. NMtag="<<nmtag<<".\n";
-       return -1;
-     }else{
-       nmtag=nmtag_u;
-     }
+  if(al.HasTag("NM")){
+    if( !al.GetTag("NM",nmtag_i)){
+       // switch to uint32_t for some versions of BAM
+       uint32_t nmtag_u=0;
+       if( !al.GetTag("NM",nmtag_u)){
+         cerr<<"Error reading NM tags in the read alignment; skipping the reads. NMtag="<<nmtag<<".\n";
+         return -1;
+       }else{
+         nmtag=nmtag_u;
+       }
+    }else{
+      nmtag=nmtag_i;
+    }
   }else{
-    nmtag=nmtag_i;
+    if(al.HasTag("nM")){
+      if( !al.GetTag("nM",nmtag_i)){
+         // switch to uint32_t for some versions of BAM
+         uint32_t nmtag_u=0;
+         if( !al.GetTag("nM",nmtag_u)){
+           cerr<<"Error reading nM tags in the read alignment; skipping the reads. nMtag="<<nmtag<<".\n";
+           return -1;
+         }else{
+           nmtag=nmtag_u;
+         }
+      }else{
+        nmtag=nmtag_i;
+      }
+    }else{
+      cerr<<"Error: no NM or nM tag.\n";
+      return -1;
+    }
   }
   if(nmtag<1) return 0;
   //MD type
@@ -370,22 +386,39 @@ int getMismatchInfoWithRefSeq(BamAlignment & al, vector<NMStruct>& nmsv, string 
   //uint32_t nmtag=0;
   int32_t nmtag_i=0;
   int nmtag=0;
-  if(!al.HasTag("NM")){
-    cerr<<"Error: no NM tag.\n";
-    return -1;
-  }
-  if( !al.GetTag("NM",nmtag_i)){
-     // switch to uint32_t for some versions of BAM
-     uint32_t nmtag_u=0;
-     if( !al.GetTag("NM",nmtag_u)){
-       cerr<<"Error reading NM tags in the read alignment; skipping the reads. NMtag="<<nmtag<<".\n";
-       return -1;
-     }else{
-       nmtag=nmtag_u;
-     }
+  if(al.HasTag("NM")){
+    if( !al.GetTag("NM",nmtag_i)){
+       // switch to uint32_t for some versions of BAM
+       uint32_t nmtag_u=0;
+       if( !al.GetTag("NM",nmtag_u)){
+         cerr<<"Error reading NM tags in the read alignment; skipping the reads. NMtag="<<nmtag<<".\n";
+         return -1;
+       }else{
+         nmtag=nmtag_u;
+       }
+    }else{
+      nmtag=nmtag_i;
+    }
   }else{
-    nmtag=nmtag_i;
+    if(al.HasTag("nM")){
+      if( !al.GetTag("nM",nmtag_i)){
+         // switch to uint32_t for some versions of BAM
+         uint32_t nmtag_u=0;
+         if( !al.GetTag("nM",nmtag_u)){
+           cerr<<"Error reading nM tags in the read alignment; skipping the reads. nMtag="<<nmtag<<".\n";
+           return -1;
+         }else{
+           nmtag=nmtag_u;
+         }
+      }else{
+        nmtag=nmtag_i;
+      }
+    }else{
+      cerr<<"Error: no NM or nM tag.\n";
+      return -1;
+    }
   }
+
   if(nmtag<1) return 0;
 
   // CIGAR
