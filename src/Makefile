@@ -1,9 +1,11 @@
 CXXFLAGS+=	-g -O2
 CC=		gcc
 CPP=		g++
-INCLUDES=	-I./ -Ibamtools/include -Lbamtools/lib
+#INCLUDES=	-I./ -Ibamtools -Ibamtools/include -Lbamtools/lib
+INCLUDES=	-I./  -Ibamtools/build/src/api/include -Ibamtools/build/src/include -Lbamtools/lib
 # LIBRARY=	-lbamtools -lz
-LIBRARY=	bamtools/lib/libbamtools.a -lz
+#LIBRARY=	bamtools/lib/libbamtools.a -lz
+LIBRARY= 	bamtools/build/src/api/libbamtools.a -lz
 PROGRAM=	../bin/rnaseqmut
 
 .PHONY:		all clean

@@ -58,6 +58,7 @@ int updateMutPos(MutMap& mtmp, long mappos, string refseq, CallingArgs& args){
   // update the map information
   //cout<<"Removing before "<<mappos<<endl;
   mtmp.removeMutBeforePos(mappos);
+  return 0;
 }
 
 map<string,MutMap> GIVENMUT;
