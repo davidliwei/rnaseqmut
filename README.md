@@ -7,6 +7,8 @@ Children's National Hospital, George Washington University
 
 Email: li.david.wei AT gmail.com
 
+Website: weililab.org
+
 ----------------------------------------------
 
 # Introduction
@@ -101,7 +103,7 @@ where in.bam is the original BAM file, ref.fa is the reference sequence, and out
 
 The usage of the "core" program, rnaseqmut, and a couple of optional scripts, is listed below.
 
-1. rnaseqmut: the core mutation detection program
+## rnaseqmut: the core mutation detection program
 
 USAGE: 
 
@@ -129,9 +131,11 @@ Where:
 |<bam_file>|(required)  The bam file from which mutation will be called.|
 
 
-2. merge2ndvcf.py: (optional) merging mutations from multiple RNA-Seq scans.
+## merge2ndvcf.py: (optional) merging mutations from multiple RNA-Seq scans.
 
-usage: merge2ndvcf.py [-h] [-l LABEL] [-x REGION] [-m] [-v] [-r MIN_READ] ...
+Usage: 
+
+    merge2ndvcf.py [-h] [-l LABEL] [-x REGION] [-m] [-v] [-r MIN_READ] ...
 
 merge tab delimited files from multiple RNA-Seq samples (usually be a second
 scan results of rnaseqmut program) into a tab delimited file, preserving all
@@ -139,23 +143,27 @@ information. All merged files should have exactly the same order and content
 of mutations.
 
 positional arguments:
-  vcffiles              VCF file names
+
+|Option|Description|
+|------|-----------|
+|vcffiles|VCF file names|
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -l LABEL, --label LABEL
-                        The labels of each sample, separated by the comma
-  -x REGION, --region REGION
-                        Only output mutations falling into a specific region,
-                        for example chr11:1-10000
-  -m, --merged          Merge forward and reverse fields into one
-  -v, --output-vcf      Output VCF formatted files
-  -r MIN_READ, --min-read MIN_READ
-                        Minimum read requirement for ALT reads. Default 4.
 
-3. filtermut.py: (optional) filter mutations based on user-defined criterion. 
+|Option|Description|
+|------|-----------|
+|-h, --help|Show this help message and exit.|
+|-l LABEL, --label LABEL|The labels of each sample, separated by the comma.|
+|-x REGION, --region REGION|Only output mutations falling into a specific region,for example chr11:1-10000|
+|-m, --merged|Merge forward and reverse fields into one.|
+|-v, --output-vcf|Output VCF formatted files.|
+|-r MIN_READ, --min-read MIN_READ|Minimum read requirement for ALT reads. Default 4.|
 
-usage: filtermut.py [-h] [-c CONTROL] [-i TREATMENT] [-t MIN_RECURRENT]
+## filtermut.py: (optional) filter mutations based on user-defined criterion. 
+
+Usage: 
+
+    filtermut.py [-h] [-c CONTROL] [-i TREATMENT] [-t MIN_RECURRENT]
                     [-d MIN_RECREAD] [-f MIN_RECFRAC] [-a MIN_REF]
                     [-b MAX_ALT] [-p] [-n] [-z] [-l LABELS] [--DP2]
                     [--DP2-out] [-x REGION]
@@ -163,55 +171,35 @@ usage: filtermut.py [-h] [-c CONTROL] [-i TREATMENT] [-t MIN_RECURRENT]
 filter mutations in samples.
 
 optional arguments:
-  -h, --help            show this help message and exit
+
+|Option|Description|
+|------|-----------|
+|-h, --help|show this help message and exit|
 
 Sample definitions:
-  -c CONTROL, --control CONTROL
-                        The index of control group samples, separated by
-                        comma. For example, 0,2,4 defines a control group of 3
-                        samples: the 1st, the 3rd and the 5th sample in the
-                        order of the input table. Default: empty (do not use
-                        any control samples)
-  -i TREATMENT, --treatment TREATMENT
-                        The index of treatment group samples, separated by
-                        comma. Default: complement of control samples (if
-                        -c/--control option is not specified, use all samples
-                        as treatment samples).
-  -t MIN_RECURRENT, --min-recurrent MIN_RECURRENT
-                        Print mutations only occuring in at least this number
-                        of good treatment samples, defined as those with
-                        mutation >=min-recread reads and >=min-recfrac percent
-                        frequency. Default 1.
-  -d MIN_RECREAD, --min-recread MIN_RECREAD
-                        Minimum alt reads defined in treated good samples,
-                        default 10.
-  -f MIN_RECFRAC, --min-recfrac MIN_RECFRAC
-                        Minimum alt reads frequency in treated good samples,
-                        default 0.2.
-  -a MIN_REF, --min-ref MIN_REF
-                        Minimum reference reads in control samples. Default 4.
-  -b MAX_ALT, --max-alt MAX_ALT
-                        Maximum alternative reads in control samples. Default
-                        4.
+
+|Option|Description|
+|------|-----------|
+|-c CONTROL, --control CONTROL|The index of control group samples, separated by comma. For example, 0,2,4 defines a control group of 3 samples: the 1st, the 3rd and the 5th sample in the order of the input table. Default: empty (do not use any control samples)|
+|-i TREATMENT, --treatment TREATMENT|The index of treatment group samples, separated by comma. Default: complement of control samples (if -c/--control option is not specified, use all samples as treatment samples).|
+|-t MIN_RECURRENT, --min-recurrent MIN_RECURRENT|Print mutations only occuring in at least this number of good treatment samples, defined as those with mutation >=min-recread reads and >=min-recfrac percent frequency. Default 1.|
+|-d MIN_RECREAD, --min-recread MIN_RECREAD|Minimum alt reads defined in treated good samples, default 10.|
+|-f MIN_RECFRAC, --min-recfrac MIN_RECFRAC|Minimum alt reads frequency in treated good samples,default 0.2.|
+|-a MIN_REF, --min-ref MIN_REF|Minimum reference reads in control samples. Default 4.|
+|-b MAX_ALT, --max-alt MAX_ALT|Maximum alternative reads in control samples. Default 4.
 
 Input/output options:
-  -p, --passall         Do not do any filtering
-  -n, --no-header       Do not print header and script used
-  -z, --no-vcf          Do not print in vcf format; print as it is.
-  -l LABELS, --labels LABELS
-                        Labels used for each sample, separated by comma.
-                        Default: SAMPLE_x where x is the sample ID. The number
-                        of lables MUST be identical to the number of all
-                        samples in the original table, not only those defined
-                        by the -c/-i parameter.
-  --DP2                 DP2 field instad of DP4 field is used in both
-                        input/output files
-  --DP2-out             DP2 field instad of DP4 field is used in output files.
-                        This option is automatically set true if --DP2 is
-                        specified.
-  -x REGION, --region REGION
-                        Only output mutations falling into a specific region,
-                        for example chr11:1-10000
+
+
+|Option|Description|
+|------|-----------|
+| -p, --passall         |Do not do any filtering|
+| -n, --no-header       |Do not print header and script used.|
+| -z, --no-vcf          |Do not print in vcf format; print as it is.|
+| -l LABELS, --labels LABELS|Labels used for each sample, separated by comma. Default: SAMPLE_x where x is the sample ID. The number of lables MUST be identical to the number of all samples in the original table, not only those defined by the -c/-i parameter.|
+| --DP2                 |DP2 field instad of DP4 field is used in both input/output files.|
+| --DP2-out             |DP2 field instad of DP4 field is used in output files. This option is automatically set true if --DP2 is specified.|
+| -x REGION, --region REGION|Only output mutations falling into a specific region, for example chr11:1-10000|
 
 
 
@@ -234,9 +222,9 @@ Step 4, merge the mutations in step 3 into a big table. In this table, each row 
 
 Step 5 illustrates an example of filtering interesting mutations using a python script "filtermut.py". In this demo, we define "control" samples as two normal samples, and would like to look for mutations that satisfy the ALL of the following criteria:
 
---occur in at least 1 non-control sample (controlled by -t/--min-recurrent option in filtermut.py) with at least 20% frequency (controlled by -f/--min-recfrac option) and 10 supporting reads (-d/--min-recread);
---do not have any supporting reads in control samples (-b/--max-alt); 
---have at least 4 non-supporting reads (reference reads) in control samples (-a/--min-ref). This requirement will exclude mutations with 0 read coverage in control samples thus we have no idea whether these mutations occur in control samples.
+- occur in at least 1 non-control sample (controlled by -t/--min-recurrent option in filtermut.py) with at least 20% frequency (controlled by -f/--min-recfrac option) and 10 supporting reads (-d/--min-recread);
+- do not have any supporting reads in control samples (-b/--max-alt); 
+- have at least 4 non-supporting reads (reference reads) in control samples (-a/--min-ref). This requirement will exclude mutations with 0 read coverage in control samples thus we have no idea whether these mutations occur in control samples.
 
 The final output is a VCF file recording mutations and read coverages in all 4 samples. You can also output tab-delimited file instead of VCF file for further downstream analysis (use -z/--no-vcf option in Step 5). For interpreting results, see the next section. 
 
@@ -248,15 +236,15 @@ For more details, refer to the demo script and the usage of each programs/script
 ----------------------------------------------
 rnaseqmut will send a tab-delimited file, each line representing one possible mutation. For example,
 
-chr1    4776457 A       C       135     56      1       0
+    chr1    4776457 A       C       135     56      1       0
 
 This mutation occurs at chr1:4776457, and it is A to C mutation. The next 4 numbers are the number of reference reads (forward), reference reads (backward), alternative reads (forward) and alternative reads (backward).
 
-If you merge mutations in N samples (as in Step 4 in the demo), there will be 4*N numeric columns following the first 4 column with the exact meaning as in single sample. The order is determined by the order of the input files.
+If you merge mutations in N samples (as in Step 4 in the demo), there will be 4\*N numeric columns following the first 4 column with the exact meaning as in single sample. The order is determined by the order of the input files.
 
 For the script "filtermut.py" in demo Step 5, a VCF file format is provided. We use the "DP4" field in standard VCF file format to record the 4 numbers in each sample. For example,
 
-chr1    4782642 .       T       G       1.0     NORMAL1.DP4=266,217,0,0;NORMAL2.DP4=264,215,0,0;TUMOR1.DP4=390,251,17,1;TUMOR2.DP4=249,184,15,0;
+    chr1    4782642 .       T       G       1.0     NORMAL1.DP4=266,217,0,0;NORMAL2.DP4=264,215,0,0;TUMOR1.DP4=390,251,17,1;TUMOR2.DP4=249,184,15,0;
 
 
 
@@ -271,33 +259,35 @@ We thank Chenfei Wang and Robert K. Bradley for their help and feedback.
 ----------------------------------------------
 #     Version History
 ----------------------------------------------
-07/22/2020	Update bamtools to newer version; fix a bug to cause segmentation fault.
-06/01/2016      rnaseqmut now supports BAM files generated by STAR.
-                We now have a solution to handle BAM files without MD tag (like BAM files from STAR). See the manual.
 
-06/09/2015  0.7 Fix a bug of calculating CIGAR strings.
-                Fix a bug of reporting indel reads.
-
-03/08/2014	0.6 Add a "-s" option to control the number of mutations allowed in a read.
-                For the script, switch from python3 to python 2.7
-                Add a binary executable for Mac OS X64 system
-
-12/11/2013	0.5	Fix compilation option so running the program does not require dynamic linking of libbamtools library.
-                Fix a bug that some mutations in the provided list are not printed due to the missing chromosome name in BAM file.
-                A linux X64 binary is provided.
-
-10/12/2013	0.4.1	Fix a bug that causes the program to quit due to the index of the reference genome.
-			          Suppress error messages due to the incompatible CIGAR letter.
-
-09/16/2013	0.4	For BAM files with MD tag missing, rnaseqmut now allows inferring mutations directly from the given reference genome. If reference genome is given, rnaseqmut will use it (instead of MD tag) to call mutations.
-
-09/16/2013	0.3	rnaseqmut allows comparing mutations with reference genome.
-                By default, rnaseqmut will skip all indels and all reads with indels; this behavior can be controlled by -k and -d options. 
-                Fix several bugs.
-
-09/14/2013	0.2	Fix a bug of failing to read NM tags for some versions of BAM.
-                By default, suppress mutations with character "N" (controlled by -n option in rnaseqmut)
-
-09/12/2013	0.1	rnaseqmut software initiated.
+- 07/22/2020	
+  * Update bamtools to newer version; fix a bug to cause segmentation fault.
+- 06/01/2016      
+  * rnaseqmut now supports BAM files generated by STAR. We now have a solution to handle BAM files without MD tag (like BAM files from STAR). See the manual.
+- 06/09/2015    0.7 
+  * Fix a bug of calculating CIGAR strings. 
+  * Fix a bug of reporting indel reads.
+- 03/08/2014	0.6 
+  * Add a "-s" option to control the number of mutations allowed in a read.
+  * For the script, switch from python3 to python 2.7
+  * Add a binary executable for Mac OS X64 system
+- 12/11/2013	0.5	
+  * Fix compilation option so running the program does not require dynamic linking of libbamtools library.
+  * Fix a bug that some mutations in the provided list are not printed due to the missing chromosome name in BAM file.
+  * A linux X64 binary is provided.
+- 10/12/2013	0.4.1	
+  * Fix a bug that causes the program to quit due to the index of the reference genome.
+  * Suppress error messages due to the incompatible CIGAR letter.
+- 09/16/2013	0.4	
+  * For BAM files with MD tag missing, rnaseqmut now allows inferring mutations directly from the given reference genome. If reference genome is given, rnaseqmut will use it (instead of MD tag) to call mutations.
+- 09/16/2013	0.3	
+  * rnaseqmut allows comparing mutations with reference genome.
+  * By default, rnaseqmut will skip all indels and all reads with indels; this behavior can be controlled by -k and -d options. 
+  * Fix several bugs.
+- 09/14/2013	0.2	
+  * Fix a bug of failing to read NM tags for some versions of BAM.
+  * By default, suppress mutations with character "N" (controlled by -n option in rnaseqmut)
+- 09/12/2013	0.1	
+  * rnaseqmut software initiated.
 
 
