@@ -1,44 +1,44 @@
-----------------------------------------------
-rnaseqmut: detecting mutations in RNA-Seq samples
-Author: Wei Li 
-Department of Biostatistics and Computational Biology
-Dana-Farber Cancer Institute, Harvard School af Public Health
+
+# rnaseqmut: detecting mutations in RNA-Seq samples
+
+## Author: Wei Li 
+
+Children's National Hospital, George Washington University 
+
 Email: li.david.wei AT gmail.com
+
 ----------------------------------------------
 
-0. Introduction
+# Introduction
 
 rnaseqmut is a light-weight C++ program to detect variants (or mutations, including SNPs, indels) from RNA-Seq BAM files. It offers the following features:
 
-  (1) Perform de-novo mutation discovery from a given BAM file;
-  (2) For a user-defined mutation list, calculate the read coverage, including reads that support reference allele (reference reads) and alternative allele (alternative reads), from a given BAM file; 
-  (3) For a series of RNA-Seq samples, filter interesting mutations based on user-defined criteria.
+1. Perform de-novo mutation discovery from a given BAM file;
+2. For a user-defined mutation list, calculate the read coverage, including reads that support reference allele (reference reads) and alternative allele (alternative reads), from a given BAM file; 
+3. For a series of RNA-Seq samples, filter interesting mutations based on user-defined criteria.
 
 This software package includes a "core" C++ program, rnaseqmut, to call variants from a single BAM file, and a series of optional scripts, written in Python and bash, to identify putative interesting mutations in a group of RNA-Seq samples. 
 
 Besides mutation detection from RNA-Seq, the "core" program (rnaseqmut) can also be used to call mutations from other high-throughput sequencing platforms, including ChIP-seq, DNA-Seq, etc.
 
-I.     Before running rnaseqmut
+**TOC**
 
-II.    Usage
-
-III.   Demo: detecting mutations from a series of RNA-Seq BAM files
-
-IV.    Interpreting results
-
-V.     Acknowledgements
-
-VI.    Version History
+* Before running rnaseqmut
+* Usage
+* Demo: detecting mutations from a series of RNA-Seq BAM files
+* Interpreting results
+* Acknowledgements
+* Version History
 
 ----------------------------------------------
-I.     Before running rnaseqmut
+#  Before running rnaseqmut
 ----------------------------------------------
 
-1. System requirements
+## System requirements
 
 For the "core" program, you can either use the provided binary directly (for Linux and Mac OS 64 bit system), or compile the program from the source code. To use the binary directly, rename the corresponding executable to "rnaseqmut". For example, if you are Mac OS 64 bit user, go into the bin directory, and type:
 
-  mv rnaseqmut.macos.x64 rnaseqmut
+    mv rnaseqmut.macos.x64 rnaseqmut
 
 and refer to I.3 for installation. 
 
@@ -47,26 +47,40 @@ To compile the "core" program, only C++ compiler (gcc version >4.1) is needed.
 To use the supplementary scripts including demo, Linux system with Python (>=2.7) support is required.
 
 
-2. Compiling
+## Compiling
 
-To compile rnaseqmut, you need to first compile bamtools. To compile bamtools, go to the src/bamtools dir, and follow the instructions in bamtools help page below:
+To compile rnaseqmut, you need to first compile bamtools (no need to install it). To compile bamtools, go to the src/bamtools dir, create a build folder by typing
 
-https://github.com/pezmaster31/bamtools/wiki/Building-and-installing
+    mkdir build
+
+Then, go into the build folder, use run cmake by typing
+
+    cd build/
+    cmake ..
+
+Once cmake is complete, compile bamtools by typing
+
+    make
+ 
+
+These instructions are copied from instructions in [bamtools help page](https://github.com/pezmaster31/bamtools/wiki/Building-and-installing).
+
 
 After bamtools compilation is complete, go back to the src dir and type
 
-  make
+    cd ..
+    make
 
 to finish the compilation. After compilation, the executable is in the bin/ directory.
 
 
-3. Installation
+## Installation
 
 After compiling is successful, add the "bin/" (or "scripts/", if necessary) directory to your PATH variable:
 
-  export PATH=$PATH:/the_path_to_the_rnaseqmut_dir/bin:$PATH
+    export PATH=$PATH:/the_path_to_the_rnaseqmut_dir/bin:$PATH
 
-4. Data preparation
+## Data preparation
 
 rnaseqmut requires sorted BAM files with index (.bai file) as input. Use "samtools sort/index" to sort/index BAM files before running rnaseqmut.
 
@@ -76,34 +90,33 @@ If the NM tag is missing in your BAM file (this is common if reads are aligned u
 
 If the MD tag is missing (like BAM files generated from STAR), you can use samtools to recalculate MD tag. The command line is as follows:
 
-samtools calmd -b in.bam ref.fa > out.bam
+    samtools calmd -b in.bam ref.fa > out.bam
 
 where in.bam is the original BAM file, ref.fa is the reference sequence, and out.bam is the new BAM file with MD tag added.
 
 
 ----------------------------------------------
-II.    Usage
+#   Usage
 ----------------------------------------------
 
 The usage of the "core" program, rnaseqmut, and a couple of optional scripts, is listed below.
 
 1. rnaseqmut: the core mutation detection program
+
 USAGE: 
 
-   ./rnaseqmut  [-t] [-r <ref_fasta>] [-l <mutation_list>] [-k] [-d] [-s
+    ./rnaseqmut  [-t] [-r <ref_fasta>] [-l <mutation_list>] [-k] [-d] [-s
                 <max_mismatch>] [-n] [-i <min_read>] [-m <mut_span>] [--]
                 [--version] [-h] <bam_file>
 
 
 Where: 
 
-   -t,  --use_mdtag
-     Use MD Tag to call mutations instead of using reference genome (by
-     -r/--ref_fasta option). This option is automatically set if the
-     reference genome is not provided, and requires the BAM file contains
-     the MD tag.
+|Option|Description|
+|------|-----------|
+|-t,  --use_mdtag |Use MD Tag to call mutations instead of using reference genome (by -r/--ref_fasta option). This option is automatically set if the reference genome is not provided, and requires the BAM file contains the MD tag.|
 
-   -r <ref_fasta>,  --ref_fasta <ref_fasta>
+     -r <ref_fasta>,  --ref_fasta <ref_fasta>
      The (optional) fasta file for the reference genome. When this option
      is set, -d/--with_indel option will be ignored.
 
@@ -237,7 +250,7 @@ Input/output options:
 
 
 ----------------------------------------------
-III.   Demo: detecting mutations from a series of RNA-Seq BAM files
+#   Demo: detecting mutations from a series of RNA-Seq BAM files
 ----------------------------------------------
 A demo script is provided in the demo directory, together with 4 sample RNA-Seq BAM files. This demo illustrates the basic usage of rnaseqmut, including calling de-novo mutations, merging mutations from different samples, calling mutations based on a given list of mutations, and filtering mutations.
 
@@ -265,7 +278,7 @@ For more details, refer to the demo script and the usage of each programs/script
 
 
 ----------------------------------------------
-IV.    Interpreting results
+#    Interpreting results
 ----------------------------------------------
 rnaseqmut will send a tab-delimited file, each line representing one possible mutation. For example,
 
@@ -282,7 +295,7 @@ chr1    4782642 .       T       G       1.0     NORMAL1.DP4=266,217,0,0;NORMAL2.
 
 
 ----------------------------------------------
-V.    Acknowledgements
+#    Acknowledgements
 ----------------------------------------------
 
 rnaseqmut depends on several third-party C++ packages, including bamtools (written by Derek Barnett, https://github.com/pezmaster31/bamtools), TCLAP (Templatized C++ Command Line Parser Library, written by Michael E. Smoot, http://tclap.sourceforge.net/), FASTA/FASTQ parser in C (by Heng Li, http://lh3lh3.users.sourceforge.net/parsefastq.shtml). The source codes of these packages are included in rnaseqmut source code.
@@ -290,7 +303,7 @@ rnaseqmut depends on several third-party C++ packages, including bamtools (writt
 We thank Chenfei Wang and Robert K. Bradley for their help and feedback.
 
 ----------------------------------------------
-VI.     Version History
+#     Version History
 ----------------------------------------------
 07/22/2020	Update bamtools to newer version; fix a bug to cause segmentation fault.
 06/01/2016      rnaseqmut now supports BAM files generated by STAR.
