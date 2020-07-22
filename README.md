@@ -115,52 +115,18 @@ Where:
 |Option|Description|
 |------|-----------|
 |-t,  --use_mdtag |Use MD Tag to call mutations instead of using reference genome (by -r/--ref_fasta option). This option is automatically set if the reference genome is not provided, and requires the BAM file contains the MD tag.|
-
-     -r <ref_fasta>,  --ref_fasta <ref_fasta>
-     The (optional) fasta file for the reference genome. When this option
-     is set, -d/--with_indel option will be ignored.
-
-   -l <mutation_list>,  --mutation_list <mutation_list>
-     The text file of a given, sorted list of mutations. Each line in a
-     file records one mutations, with chromosome, location, reference and
-     alternative sequence (separated by tab). The output will only include
-     mutations within a given mutation list.
-
-   -k,  --with_indel_read
-     Do not skip reads with indels. By default all reads with indels are
-     skipped as most RNA-Seq are performed by Illumina sequencing, which is
-     prone to indel errors.
-
-   -d,  --with_indel
-     Do not skip indels. By default all indels are skipped as most RNA-Seq
-     are performed by Illumina sequencing, which is prone to indel errors.
-     This option will be ignored if -r/--ref_fasta option is provided.
-
-   -s <max_mismatch>,  --max_mismatch <max_mismatch>
-     The maximum number of mismatches in a read. Reads with more number of
-     mismatches will be discarded. Default 1.
-
-   -n,  --output_n
-     Treat the character N as substitutions.
-
-   -i <min_read>,  --min_read <min_read>
-     The minimum read count for the mutation to output. Default 1.
-
-   -m <mut_span>,  --mut_span <mut_span>
-     The minimum distance of the mutation to the beginning (end) of the
-     read. Default 4.
-
-   --,  --ignore_rest
-     Ignores the rest of the labeled arguments following this flag.
-
-   --version
-     Displays version information and exits.
-
-   -h,  --help
-     Displays usage information and exits.
-
-   <bam_file>
-     (required)  The bam file from which mutation will be called
+|-r <ref_fasta>,  --ref_fasta <ref_fasta>|The (optional) fasta file for the reference genome. When this option is set, -d/--with_indel option will be ignored.|
+|-l <mutation_list>,  --mutation_list <mutation_list>|The text file of a given, sorted list of mutations. Each line in a file records one mutations, with chromosome, location, reference and alternative sequence (separated by tab). The output will only include mutations within a given mutation list.|
+|-k,  --with_indel_read| Do not skip reads with indels. By default all reads with indels are skipped as most RNA-Seq are performed by Illumina sequencing, which is prone to indel errors.|
+|-d,  --with_indel|Do not skip indels. By default all indels are skipped as most RNA-Seq are performed by Illumina sequencing, which is prone to indel errors. This option will be ignored if -r/--ref_fasta option is provided.|
+|-s <max_mismatch>,  --max_mismatch <max_mismatch>|The maximum number of mismatches in a read. Reads with more number of mismatches will be discarded. Default 1.|
+|-n,  --output_n| Treat the character N as substitutions.|
+|-i <min_read>,  --min_read <min_read>|The minimum read count for the mutation to output. Default 1.|
+|-m <mut_span>,  --mut_span <mut_span>| The minimum distance of the mutation to the beginning (end) of the read. Default 4.|
+|--,  --ignore_rest|Ignore the rest of the labeled arguments following this flag.|
+|--version|Display version information and exit.|
+| -h,  --help|Display usage information and exit.|
+|<bam_file>|(required)  The bam file from which mutation will be called.|
 
 
 2. merge2ndvcf.py: (optional) merging mutations from multiple RNA-Seq scans.
