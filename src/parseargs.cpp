@@ -22,7 +22,8 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
     ValueArg<int> mismatcharg("s","max_mismatch","The maximum number of mismatches in a read. Reads with more number of mismatches will be discarded. Default 1.",false,1,"max_mismatch");
     cmd.add(mismatcharg);
 
-    SwitchArg indelarg("d","with_indel","Do not skip indels. By default all indels are skipped as most RNA-Seq are performed by Illumina sequencing, which is prone to indel errors. This option will be ignored if -r/--ref_fasta option is provided.");
+    //SwitchArg indelarg("d","with_indel","Do not skip indels. By default all indels are skipped as most RNA-Seq are performed by Illumina sequencing, which is prone to indel errors. This option will be ignored if -r/--ref_fasta option is provided.");
+    SwitchArg indelarg("d","with_indel","Do not skip indels. By default all indels are skipped as most RNA-Seq are performed by Illumina sequencing, which is prone to indel errors.");
     cmd.add(indelarg);
 
     SwitchArg indelreadarg("k","with_indel_read","Do not skip reads with indels. By default all reads with indels are skipped as most RNA-Seq are performed by Illumina sequencing, which is prone to indel errors.");
@@ -31,7 +32,8 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
     ValueArg<string> mutfilearg("l","mutation_list","The text file of a given, sorted list of mutations. Each line in a file records one mutations, with chromosome, location, reference and alternative sequence (separated by tab). The output will only include mutations within a given mutation list.",false,"","mutation_list");
     cmd.add(mutfilearg);
 
-    ValueArg<string> reffilearg("r","ref_fasta","The (optional) fasta file for the reference genome. When this option is set, -d/--with_indel option will be ignored.",false,"","ref_fasta");
+    //ValueArg<string> reffilearg("r","ref_fasta","The (optional) fasta file for the reference genome. When this option is set, -d/--with_indel option will be ignored.",false,"","ref_fasta");
+    ValueArg<string> reffilearg("r","ref_fasta","The (optional) fasta file for the reference genome.",false,"","ref_fasta");
     cmd.add(reffilearg);
 
     SwitchArg mdtagarg("t","use_mdtag","Use MD Tag to call mutations instead of using reference genome (by -r/--ref_fasta option). This option is automatically set if the reference genome is not provided, and requires the BAM file contains the MD tag.");

@@ -117,10 +117,10 @@ Where:
 |Option|Description|
 |------|-----------|
 |-t,  --use_mdtag |Use MD Tag to call mutations instead of using reference genome (by -r/--ref_fasta option). This option is automatically set if the reference genome is not provided, and requires the BAM file contains the MD tag.|
-|-r <ref_fasta>,  --ref_fasta <ref_fasta>|The (optional) fasta file for the reference genome. When this option is set, -d/--with_indel option will be ignored.|
+|-r <ref_fasta>,  --ref_fasta <ref_fasta>|The (optional) fasta file for the reference genome. |
 |-l <mutation_list>,  --mutation_list <mutation_list>|The text file of a given, sorted list of mutations. Each line in a file records one mutations, with chromosome, location, reference and alternative sequence (separated by tab). The output will only include mutations within a given mutation list.|
 |-k,  --with_indel_read| Do not skip reads with indels. By default all reads with indels are skipped as most RNA-Seq are performed by Illumina sequencing, which is prone to indel errors.|
-|-d,  --with_indel|Do not skip indels. By default all indels are skipped as most RNA-Seq are performed by Illumina sequencing, which is prone to indel errors. This option will be ignored if -r/--ref_fasta option is provided.|
+|-d,  --with_indel|Do not skip indels. By default all indels are skipped as most RNA-Seq are performed by Illumina sequencing, which is prone to indel errors. |
 |-s <max_mismatch>,  --max_mismatch <max_mismatch>|The maximum number of mismatches in a read. Reads with more number of mismatches will be discarded. Default 1.|
 |-n,  --output_n| Treat the character N as substitutions.|
 |-i <min_read>,  --min_read <min_read>|The minimum read count for the mutation to output. Default 1.|
@@ -260,6 +260,8 @@ We thank Chenfei Wang and Robert K. Bradley for their help and feedback.
 #     Version History
 ----------------------------------------------
 
+- 04/24/2021
+  * Update documentation and README on with_indel options.
 - 07/22/2020	
   * Update bamtools to newer version; fix a bug to cause segmentation fault.
 - 06/01/2016      
