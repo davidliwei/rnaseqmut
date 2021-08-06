@@ -1,6 +1,6 @@
 FROM ubuntu
 
-RUN apt-get update  && apt-get -y install cmake make g++ zlib1g-dev
+RUN apt-get update  && apt-get -y install cmake make g++ zlib1g-dev python3
 
 COPY . /rnaseqmut
 
