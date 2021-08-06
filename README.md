@@ -39,13 +39,13 @@ Besides mutation detection from RNA-Seq, the "core" program (rnaseqmut) can also
 
 We provide a Docker image to easily run rnaseqmut without the need of compiling. Once you have Docker installed on your system, on your terminal, first type
 
-   docker pull davidliwei/rnaseqmut
+    docker pull davidliwei/rnaseqmut
 
 This will download the latest rnaseqmut built.
 
 Then, figure out the folder you want to work with -- the folder should have all the necessary files to run rnaseqmut (e.g., bam file). For example, "/User/John/data". Then, from the command line, type:
 
-   docker run -it --volume=/User/John/data:/work --workdir="/work"  davidliwei/rnaseqmut
+    docker run -it --volume=/User/John/data:/work --workdir="/work"  davidliwei/rnaseqmut
 
 If you are already in the folder you are working with in the terminal, you can also use the following command:
 
