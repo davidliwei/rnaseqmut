@@ -81,6 +81,8 @@ long getChrRealPos(long read0, int pos, vector<CigarOp>& cgo, int& posafterins){
   posafterins=pos;
   for(int i=0;i<cgo.size();i++){
     switch(cgo[i].Type){
+      case 'S': // soft-clip: consider it as a match
+      case '=': // match
       case 'M': // match
         if(relpos+cgo[i].Length >= pos) quitfor=true;
         relpos+=cgo[i].Length;
@@ -105,15 +107,14 @@ long getChrRealPos(long read0, int pos, vector<CigarOp>& cgo, int& posafterins){
       case 'D': // deletion relative to the reference; jump 1 base
         tojump+=cgo[i].Length;
         break;
-      case 'H':
-      case 'S':
-      case 'P':
-      case '=':
+      case 'H': // hard clip; do not consume query
+      case 'P': // padding; do not consume query
+	break;
       case 'X':
-        //cerr<<"Error: CIGAR operator H, S, P, = and X are not supported currently.\n";
+        cerr<<"Warning: CIGAR operator X are not supported currently.\n";
         return -1;
       default:
-        cerr<<"Error: unrecognized CIGAR character "<<cgo[i].Type<<endl;
+        cerr<<"Warning: unrecognized CIGAR character "<<cgo[i].Type<<endl;
         return -1;
     }
     if(quitfor)break;

@@ -30,6 +30,7 @@ int findRecord(vector<MutInfo>& cvm, string ref, string alt, bool add){
 int MutMap::addOneMut(long pos, string ref, string alt, bool forward,bool createifnoexist,int increment){
   
   vector<MutInfo>& cvm = mvm[pos];
+  if(pos<0){cerr<<"Warning: Inserting position of mutation =-1\n";}
   int recid=findRecord(cvm, ref, alt, createifnoexist);
   if(createifnoexist==false && recid==-1) return -1;
   if(forward){

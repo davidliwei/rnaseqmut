@@ -25,6 +25,7 @@ int getReferenceInfo(BamReader & reader){
 
 void printMutation(string refname,long pos,MutInfo& mti){
   string sep="\t";
+  //if(pos==-1) cout<<"-1 detected...\n";
   cout<<refname<<"\t"<<pos<<"\t"<<mti.ref<<"\t"<<mti.alt<<"\t"
       <<mti.refF<<sep<<mti.refB<<sep<<mti.altF<<sep<<mti.altB<<endl;
 }
@@ -109,6 +110,7 @@ int alignmentToMutation(BamAlignment& al, bool mutation_given, MutMap& mtmp, Cal
     for(int i=0;i<vnms.size();i++){
       vnms[i].chr_id=refid;
       blackout.insert(vnms[i].real_pos);
+      if(vnms[i].real_pos<0){cerr<<"Warning: The real position of mutation =-1\n";}
       if(vnms[i].relativepos < args.mut_span || al.Length- vnms[i].relativepos < args.mut_span ) continue;
       bool isrev=! al.IsReverseStrand();
       // compare with given reference sequence, check for valid

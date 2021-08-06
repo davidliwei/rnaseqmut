@@ -284,6 +284,7 @@ We thank Chenfei Wang and Robert K. Bradley for their help and feedback.
 ----------------------------------------------
 
 - 08/06/2021
+  * Add support to additional characters in CIGAR including soft clipping (S), P, = , H; and fix a corresponding bug to report -1 in position.
   * Add Automatic build and Docker support.
 - 04/24/2021
   * Update documentation and README on with_indel options.
