@@ -25,7 +25,8 @@ Besides mutation detection from RNA-Seq, the "core" program (rnaseqmut) can also
 
 **TOC**
 
-* Before running rnaseqmut
+* Run rnaseqmut via Docker
+* Compile and run rnaseqmut
 * Usage
 * Demo: detecting mutations from a series of RNA-Seq BAM files
 * Interpreting results
@@ -33,7 +34,29 @@ Besides mutation detection from RNA-Seq, the "core" program (rnaseqmut) can also
 * Version History
 
 ----------------------------------------------
-#  Before running rnaseqmut
+#  Run rnaseqmut via Docker
+----------------------------------------------
+
+We provide a Docker image to easily run rnaseqmut without the need of compiling. Once you have Docker installed on your system, on your terminal, first type
+
+   docker pull davidliwei/rnaseqmut
+
+This will download the latest rnaseqmut built.
+
+Then, figure out the folder you want to work with -- the folder should have all the necessary files to run rnaseqmut (e.g., bam file). For example, "/User/John/data". Then, from the command line, type:
+
+   docker run -it --volume=/User/John/data:/work --workdir="/work"  davidliwei/rnaseqmut
+
+If you are already in the folder you are working with in the terminal, you can also use the following command:
+
+    docker run -it --volume=`pwd`:/work --workdir="/work"  davidliwei/rnaseqmut
+
+If everything goes well, typing "rnaseqmut" should work on terminals.
+
+
+
+----------------------------------------------
+#  Compile and run rnaseqmut
 ----------------------------------------------
 
 ## System requirements
@@ -260,6 +283,8 @@ We thank Chenfei Wang and Robert K. Bradley for their help and feedback.
 #     Version History
 ----------------------------------------------
 
+- 08/06/2021
+  * Add Automatic build and Docker support.
 - 04/24/2021
   * Update documentation and README on with_indel options.
 - 07/22/2020	
