@@ -11,7 +11,7 @@ using namespace TCLAP;
 /* parsing arguments */
 int parseArguments(int argc, char* argv[],CallingArgs& args){
   try{
-    CmdLine cmd("Calling mutations in BAM file.",' ',"0.6");
+    CmdLine cmd("Calling mutations in BAM file.",' ',"1.1a");
     
     ValueArg<int> mutspanarg("m","mut_span","The minimum distance of the mutation to the beginning (end) of the read. Default 4.",false,4,"mut_span");
     cmd.add(mutspanarg);
@@ -80,5 +80,4 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
   }
   return 0;
 }
-
 

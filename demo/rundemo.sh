@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # This demo illustrates the basic usage of rnaseqmut, including calling de-novo mutations, merging mutations from different samples, calling mutations based on a given list of mutations, and filtering mutations.
 
@@ -23,6 +24,19 @@ cd $CURRENTPATH
 export PATH=$BASEPATH/bin:$PATH
 # add script directory to the PATH
 export PATH=$BASEPATH/script:$PATH
+
+if ! command -v rnaseqmut >/dev/null 2>&1; then
+  if [ -x "$BASEPATH/bin/rnaseqmut.linux.x64" ]; then
+    ln -sf "$BASEPATH/bin/rnaseqmut.linux.x64" "$BASEPATH/bin/rnaseqmut"
+  elif [ -x "$BASEPATH/bin/rnaseqmut.macos.x64" ]; then
+    ln -sf "$BASEPATH/bin/rnaseqmut.macos.x64" "$BASEPATH/bin/rnaseqmut"
+  fi
+fi
+
+if ! command -v rnaseqmut >/dev/null 2>&1; then
+  echo "ERROR: rnaseqmut binary is not available. Compile from source or add bin/rnaseqmut to PATH."
+  exit 1
+fi
 
 ####################
 # step 0, cleaning
@@ -88,5 +102,4 @@ eval $CMD
 
  
 echo ""
-echo "####### DEMO completed succesfully.  Check results/ALLMUT_FILTERED.vcf for detected mutations.  ##########"
-
+echo "####### DEMO completed successfully. Check results/ALLMUT_FILTERED.vcf for detected mutations. ##########"
