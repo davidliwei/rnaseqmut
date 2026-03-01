@@ -283,6 +283,13 @@ We thank Chenfei Wang and Robert K. Bradley for their help and feedback.
 #     Version History
 ----------------------------------------------
 
+- 03/01/2026    1.1a
+  * Update CLI-reported rnaseqmut version to 1.1a.
+  * Improve compatibility with modern GCC/libstdc++ and make demo execution fail-fast when rnaseqmut is missing.
+  * Clean demo script output by fixing Python regex escape warnings.
+- 03/01/2026    1.0
+  * Define 1.0 as the current GitHub baseline release version.
+
 - 08/06/2021
   * Add support to additional characters in CIGAR including soft clipping (S), P, = , H; and fix a corresponding bug to report -1 in position.
   * Add Automatic build and Docker support.
@@ -317,5 +324,4 @@ We thank Chenfei Wang and Robert K. Bradley for their help and feedback.
   * By default, suppress mutations with character "N" (controlled by -n option in rnaseqmut)
 - 09/12/2013	0.1	
   * rnaseqmut software initiated.
-
 

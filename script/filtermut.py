@@ -38,7 +38,7 @@ regionstart=0;
 regionend=0;
 if args.region is not None:
   hasregion=True;
-  rgpattern=re.findall('(\w+):(\d+)-(\d+)',args.region);
+  rgpattern=re.findall(r'(\w+):(\d+)-(\d+)',args.region);
   if len(rgpattern)==0:
     print('Error: unknown region '+args.region,file=sys.stderr);
     sys.exit(-1);
