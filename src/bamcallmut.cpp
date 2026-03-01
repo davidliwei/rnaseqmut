@@ -8,6 +8,8 @@
 #include <fstream>
 #include <sstream>
 #include <climits>
+#include <cctype>
+#include <vector>
 
 using namespace std;
 
@@ -17,6 +19,53 @@ using namespace std;
 Get the reference annotation
 */
 RefVector RVREF;
+ofstream VCFOUT;
+string VCFSAMPLENAME;
+
+string basenameNoPath(const string& path){
+  string::size_type p = path.find_last_of("/\\");
+  if(p==string::npos) return path;
+  return path.substr(p+1);
+}
+
+string sanitizeSampleName(string sample){
+  for(size_t i=0;i<sample.size();i++){
+    char& c = sample[i];
+    if(!(isalnum((unsigned char)c) || c=='_' || c=='.' || c=='-')) c='_';
+  }
+  if(sample=="" || sample==".") sample="SAMPLE";
+  return sample;
+}
+
+int initVcfOutput(const CallingArgs& args){
+  string vcfpath = args.vcf_output;
+  if(vcfpath=="") vcfpath=args.bamfilename+".vcf";
+  VCFOUT.open(vcfpath.c_str());
+  if(!VCFOUT.is_open()){
+    cerr<<"Error: could not open VCF output file "<<vcfpath<<endl;
+    return -1;
+  }
+  string sample = basenameNoPath(args.bamfilename);
+  string::size_type dot = sample.rfind('.');
+  if(dot!=string::npos) sample = sample.substr(0,dot);
+  VCFSAMPLENAME = sanitizeSampleName(sample);
+  VCFOUT<<"##fileformat=VCFv4.2\n";
+  VCFOUT<<"##source=rnaseqmut\n";
+  VCFOUT<<"##INFO=<ID=DP,Number=1,Type=Integer,Description=\"Total read depth at this locus (REF+ALT)\">\n";
+  VCFOUT<<"##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">\n";
+  VCFOUT<<"##FORMAT=<ID=DP,Number=1,Type=Integer,Description=\"Read depth for this sample\">\n";
+  VCFOUT<<"##FORMAT=<ID=AD,Number=R,Type=Integer,Description=\"Allele depths for REF and ALT\">\n";
+  VCFOUT<<"##FORMAT=<ID=ADF,Number=R,Type=Integer,Description=\"Forward-strand allele depths for REF and ALT\">\n";
+  VCFOUT<<"##FORMAT=<ID=ADR,Number=R,Type=Integer,Description=\"Reverse-strand allele depths for REF and ALT\">\n";
+  VCFOUT<<"#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t"<<VCFSAMPLENAME<<"\n";
+  cerr<<"VCF file:"<<vcfpath<<endl;
+  return 0;
+}
+
+void closeVcfOutput(){
+  if(VCFOUT.is_open()) VCFOUT.close();
+}
+
 int getReferenceInfo(BamReader & reader){
 
   RVREF=reader.GetReferenceData();
@@ -28,6 +77,18 @@ void printMutation(string refname,long pos,MutInfo& mti){
   //if(pos==-1) cout<<"-1 detected...\n";
   cout<<refname<<"\t"<<pos<<"\t"<<mti.ref<<"\t"<<mti.alt<<"\t"
       <<mti.refF<<sep<<mti.refB<<sep<<mti.altF<<sep<<mti.altB<<endl;
+
+  if(VCFOUT.is_open()){
+    int refDepth = mti.refF + mti.refB;
+    int altDepth = mti.altF + mti.altB;
+    int dp = refDepth + altDepth;
+    VCFOUT<<refname<<"\t"<<pos<<"\t.\t"<<mti.ref<<"\t"<<mti.alt
+          <<"\t.\tPASS\tDP="<<dp
+          <<"\tGT:DP:AD:ADF:ADR\t0/1:"<<dp<<":"<<refDepth<<","<<altDepth
+          <<":"<<mti.refF<<","<<mti.altF
+          <<":"<<mti.refB<<","<<mti.altB
+          <<"\n";
+  }
 }
 
 /*
@@ -259,6 +320,7 @@ int main(int argc, char* argv[]){
   //parse command line information
   CallingArgs args;
   if(parseArguments(argc,argv,args)==-1) return -1;
+  if(initVcfOutput(args)==-1) return -1;
   
   // check if a given list of mutations is given; load chromosome names
   bool mutation_given=args.mutation_given;
@@ -382,10 +444,9 @@ int main(int argc, char* argv[]){
   */
 
   reader.Close();
+  closeVcfOutput();
   if(args.has_fasta){
     refseq_destroy();
   }
   return 0;
 }
-
-

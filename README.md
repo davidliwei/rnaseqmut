@@ -130,7 +130,7 @@ The usage of the "core" program, rnaseqmut, and a couple of optional scripts, is
 
 USAGE: 
 
-    ./rnaseqmut  [-t] [-r <ref_fasta>] [-l <mutation_list>] [-k] [-d] [-s
+    ./rnaseqmut  [--vcf_output <vcf_output>] [-t] [-r <ref_fasta>] [-l <mutation_list>] [-k] [-d] [-s
                 <max_mismatch>] [-n] [-i <min_read>] [-m <mut_span>] [--]
                 [--version] [-h] <bam_file>
 
@@ -140,6 +140,7 @@ Where:
 |Option|Description|
 |------|-----------|
 |-t,  --use_mdtag |Use MD Tag to call mutations instead of using reference genome (by -r/--ref_fasta option). This option is automatically set if the reference genome is not provided, and requires the BAM file contains the MD tag.|
+|--vcf_output <vcf_output>|VCF output filename. Default: &lt;bam_file&gt;.vcf.|
 |-r <ref_fasta>,  --ref_fasta <ref_fasta>|The (optional) fasta file for the reference genome. |
 |-l <mutation_list>,  --mutation_list <mutation_list>|The text file of a given, sorted list of mutations. Each line in a file records one mutations, with chromosome, location, reference and alternative sequence (separated by tab). The output will only include mutations within a given mutation list.|
 |-k,  --with_indel_read| Do not skip reads with indels. By default all reads with indels are skipped as most RNA-Seq are performed by Illumina sequencing, which is prone to indel errors.|
@@ -151,7 +152,7 @@ Where:
 |--,  --ignore_rest|Ignore the rest of the labeled arguments following this flag.|
 |--version|Display version information and exit.|
 | -h,  --help|Display usage information and exit.|
-|<bam_file>|(required)  The bam file from which mutation will be called.|
+|<bam_file>|(required)  The bam file from which mutation will be called. The program still prints the default tab-delimited output to STDOUT and also writes a VCF file (default: &lt;bam_file&gt;.vcf).|
 
 
 ## merge2ndvcf.py: (optional) merging mutations from multiple RNA-Seq scans.
@@ -324,4 +325,3 @@ We thank Chenfei Wang and Robert K. Bradley for their help and feedback.
   * By default, suppress mutations with character "N" (controlled by -n option in rnaseqmut)
 - 09/12/2013	0.1	
   * rnaseqmut software initiated.
-

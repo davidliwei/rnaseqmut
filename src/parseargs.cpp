@@ -39,6 +39,9 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
     SwitchArg mdtagarg("t","use_mdtag","Use MD Tag to call mutations instead of using reference genome (by -r/--ref_fasta option). This option is automatically set if the reference genome is not provided, and requires the BAM file contains the MD tag.");
     cmd.add(mdtagarg);
 
+    ValueArg<string> vcfoutarg("","vcf_output","VCF output filename. Default: <bam_file>.vcf",false,"","vcf_output");
+    cmd.add(vcfoutarg);
+
     UnlabeledValueArg<string> bamfile("bamfile","The bam file from which mutation will be called",true,"","bam_file");
     cmd.add(bamfile);
     
@@ -54,6 +57,7 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
     args.skipindelread=!indelreadarg.getValue();
     args.usemdtag=mdtagarg.getValue();
     args.max_mismatch=mismatcharg.getValue();
+    args.vcf_output=vcfoutarg.getValue();
     
     args.ref_fasta=reffilearg.getValue();
     if(args.ref_fasta != ""){
@@ -74,10 +78,10 @@ int parseArguments(int argc, char* argv[],CallingArgs& args){
     cerr<<"Min read:"<<args.min_read<<endl;
     cerr<<"Max mismatch:"<<args.max_mismatch<<endl;
     cerr<<"Reference genome:"<<args.ref_fasta<<endl;
+    cerr<<"VCF output:"<<(args.vcf_output=="" ? args.bamfilename+".vcf" : args.vcf_output)<<endl;
   }catch(ArgException &e){
     cerr<<"error: "<<e.error()<<" for arg "<<e.argId();
     return -1;
   }
   return 0;
 }
-

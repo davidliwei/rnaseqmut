@@ -1,25 +1,29 @@
-CXXFLAGS+=	-g -O2
-CC=		gcc
-CPP=		g++
-#INCLUDES=	-I./ -Ibamtools -Ibamtools/include -Lbamtools/lib
-INCLUDES=	-I./  -Ibamtools/build/src/api/include -Ibamtools/build/src/include -Lbamtools/lib
-# LIBRARY=	-lbamtools -lz
-#LIBRARY=	bamtools/lib/libbamtools.a -lz
-LIBRARY= 	bamtools/build/src/api/libbamtools.a -lz
-PROGRAM=	../bin/rnaseqmut
+CXXFLAGS += -g -O2
+CC = gcc
+CPP = g++
 
-.PHONY:		all clean
+BAMTOOLS_BUILD_DIR = bamtools/build
+BAMTOOLS_LIB = $(BAMTOOLS_BUILD_DIR)/src/api/libbamtools.a
 
-all:		${PROGRAM}
+INCLUDES = -I./ -Ibamtools/src -Ibamtools/src/api -Ibamtools/src/utils -I$(BAMTOOLS_BUILD_DIR)/src/api
+LIBRARY = -lz
+PROGRAM = ../bin/rnaseqmut
 
-${PROGRAM}:	bamcallmut.o bamalignfunc.o  parseargs.o mutmap.o givenrefmut.o refio.o
-	${CPP} ${CXXFLAGS}  ${INCLUDES}  $^ ${LIBRARY} -o $@
+.PHONY: all clean
 
+all: $(PROGRAM)
 
-.SUFFIXES:	.cpp .o
+$(PROGRAM): bamcallmut.o bamalignfunc.o parseargs.o mutmap.o givenrefmut.o refio.o $(BAMTOOLS_LIB)
+	$(CPP) $(CXXFLAGS) $(INCLUDES) $^ $(LIBRARY) -o $@
+
+$(BAMTOOLS_LIB):
+	cmake -S bamtools -B $(BAMTOOLS_BUILD_DIR)
+	cmake --build $(BAMTOOLS_BUILD_DIR) --target BamTools
+
+.SUFFIXES: .cpp .o
 
 .cpp.o:
-	${CC} -c ${CXXFLAGS} ${INCLUDES} $< -o $@
+	$(CC) -c $(CXXFLAGS) $(INCLUDES) $< -o $@
 
 clean:
-	rm -rf *.o ${PROGRAM}
+	rm -rf *.o $(PROGRAM)
