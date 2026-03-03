@@ -23,6 +23,9 @@ This software package includes a "core" C++ program, rnaseqmut, to call variants
 
 Besides mutation detection from RNA-Seq, the "core" program (rnaseqmut) can also be used to call mutations from other high-throughput sequencing platforms, including ChIP-seq, DNA-Seq, etc.
 
+Python port: `rnaseqmut-py` (Python implementation of the workflow and demo)
+https://github.com/davidliwei/rnaseqmut-py
+
 **TOC**
 
 * Run rnaseqmut via Docker
