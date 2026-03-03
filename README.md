@@ -3,7 +3,7 @@
 
 ## Author: Wei Li 
 
-Children's National Hospital, George Washington University 
+University of Maryland - Institute for Health Computing
 
 Email: li.david.wei AT gmail.com
 
